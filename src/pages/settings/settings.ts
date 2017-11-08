@@ -5,6 +5,11 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Settings } from '../../providers/providers';
 
+import {
+  SkygearService
+} from '../../app/skygear.service';
+
+
 /**
  * The Settings page is a simple form that syncs with a Settings provider
  * to enable the user to customize settings for the app.
@@ -17,6 +22,10 @@ import { Settings } from '../../providers/providers';
 })
 export class SettingsPage {
   // Our local settings object
+
+  skygear = null;
+  skygearState = "Not ready";
+
   options: any;
 
   settingsReady = false;
@@ -38,6 +47,7 @@ export class SettingsPage {
     public settings: Settings,
     public formBuilder: FormBuilder,
     public navParams: NavParams,
+    private skygearService: SkygearService,
     public translate: TranslateService) {
   }
 
@@ -87,6 +97,31 @@ export class SettingsPage {
 
       this._buildForm();
     });
+  }
+
+  showToast(msg) {
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
+  }
+
+  doSignout() {
+    // Sign up user here
+    this.skygearService.getSkygear()
+      .then((skygear)=> {
+        console.log(skygear);
+        console.log(skygear.auth.currentUser);
+        skygear.auth.logout().then((user)=> {
+          this.showToast(`Logged out!`);
+          this.navCtrl.push(WelcomePage);
+        }, (err) => {
+          // Unable to sign up
+          this.showToast(this.signupErrorString);
+      })
+    })
   }
 
   ngOnChanges() {

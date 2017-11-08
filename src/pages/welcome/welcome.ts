@@ -1,6 +1,14 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 
+import { User } from '../../providers/providers';
+import { MainPage } from '../pages';
+
+import {
+  SkygearService,
+  Tracking
+} from '../../app/skygear.service';
+
 /**
  * The Welcome Page is a splash page that quickly describes the app,
  * and then directs the user to create an account or log in.
@@ -14,7 +22,32 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class WelcomePage {
 
-  constructor(public navCtrl: NavController) { }
+  skygear = null;
+  skygearState = "Not ready";
+
+  constructor(public navCtrl: NavController,
+    private skygearService: SkygearService) { }
+
+  ngOnInit(): void {
+    console.log(`OnInit Welcome`);
+
+    this.checkLogin();
+  }
+
+  checkLogin() {
+    this.skygearService.getSkygear()
+      .then((skygear)=> {
+        console.log(skygear);
+        console.log(skygear.auth.currentUser);
+        if (skygear.auth.currentUser != null) {
+          this.navCtrl.push(MainPage);
+        }
+      }).catch((error) => {
+        this.skygearState = "Errored";
+        console.log(`Skygear Error`);
+        console.log(error);
+      });
+  }
 
   login() {
     this.navCtrl.push('LoginPage');
