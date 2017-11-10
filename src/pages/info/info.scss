@@ -1,0 +1,40 @@
+page-info ion-content {
+  background: linear-gradient(180deg, #c5cbff, #58bdfe);
+  background-size: 120% 120%;
+  -webkit-animation: AnimationName 20s ease infinite;
+  -moz-animation: AnimationName 20s ease infinite;
+  -o-animation: AnimationName 20s ease infinite;
+  animation: AnimationName 20s ease infinite;
+  @-webkit-keyframes AnimationName {
+      0%{background-position:13% 0%}
+      50%{background-position:88% 100%}
+      100%{background-position:13% 0%}
+  }
+  @-moz-keyframes AnimationName {
+      0%{background-position:13% 0%}
+      50%{background-position:88% 100%}
+      100%{background-position:13% 0%}
+  }
+  @-o-keyframes AnimationName {
+      0%{background-position:13% 0%}
+      50%{background-position:88% 100%}
+      100%{background-position:13% 0%}
+  }
+  @keyframes AnimationName {
+      0%{background-position:13% 0%}
+      50%{background-position:88% 100%}
+      100%{background-position:13% 0%}
+  }
+
+  div, h1, h2, h3, h4, h5, p, span {
+    color: #fff;
+  }
+
+  .app-title {
+    color: #fff;
+    margin-top: 100px;
+    font-size: 4rem;
+    font-weight: 700;
+  }
+
+}

@@ -70,9 +70,16 @@ export class LoginPage {
       .then((skygear)=> {
         console.log(skygear);
         console.log(skygear.auth.currentUser);
-        this.navCtrl.push(MainPage);
+
+        skygear.auth.loginWithEmail(this.account.email,this.account.password).then((user)=> {
+          this.showToast(`Welcome back!`);
+          this.navCtrl.push(MainPage);
+        }, (err) => {
+          // Unable to sign up
+          this.showToast(this.loginErrorString);
+      })
       }, (err) => {
-        showToast(this.loginErrorString);
+        this.showToast(this.loginErrorString);
       })
   }
 }

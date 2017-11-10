@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { Settings } from '../../providers/providers';
+import { WelcomePage } from '../pages';
 
 import {
   SkygearService
@@ -46,6 +47,7 @@ export class SettingsPage {
   constructor(public navCtrl: NavController,
     public settings: Settings,
     public formBuilder: FormBuilder,
+    public toastCtrl: ToastController,
     public navParams: NavParams,
     private skygearService: SkygearService,
     public translate: TranslateService) {
@@ -118,8 +120,7 @@ export class SettingsPage {
           this.showToast(`Logged out!`);
           this.navCtrl.push(WelcomePage);
         }, (err) => {
-          // Unable to sign up
-          this.showToast(this.signupErrorString);
+          this.showToast("Couldn't logout");
       })
     })
   }
