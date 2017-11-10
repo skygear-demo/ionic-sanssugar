@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 import { Chart } from 'chart.js';
 
 import { Item } from '../../models/item';
@@ -19,7 +20,10 @@ export class ChartPage {
 
   currentItems: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public items: Items) { }
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public items: Items,
+    private alertCtrl: AlertController) { }
 
 
   /**
@@ -45,7 +49,21 @@ export class ChartPage {
     });
   }
 
+
+  showDisclaimer() {
+    let alert = this.alertCtrl.create({
+        title: 'Disclaimer',
+        subTitle: 'Sans Sugar is for education purposes only and is not a substitute for medical advice from a doctor or healther provider.',
+        buttons: ['OK']
+      });
+      alert.present();
+  }
+
       ionViewDidLoad() {
+
+
+        //  Disclaimer
+        this.showDisclaimer();
  
         // this.barChart = new Chart(this.barCanvas.nativeElement, {
  
