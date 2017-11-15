@@ -42,7 +42,6 @@ page-landing ion-content {
     margin-bottom: 40px;
   }
 
-
   .landing-logo {
     margin: auto;
     padding: 0;
@@ -55,23 +54,22 @@ page-landing ion-content {
     max-width: 800px;
   }
 
-  
-    ion-item.item-input.sanssugar-input {
-      background-color: rgba(255,255,255, 0.2);
-      border-top: 1px #fff solid;
-      border-bottom: 1px #fff solid;
+  ion-item.item-input.sanssugar-input {
+    background-color: rgba(255,255,255, 0.2);
+    border-top: 1px #fff solid;
+    border-bottom: 1px #fff solid;
 
-      ion-label {
-        color: #fff;
+    ion-label {
+      color: #fff;
+    }
+
+    input[type="text"] {
+      text-align: right;
+      color: #fff;
+
+      &::placeholder {
+        color: #eee;
       }
-
-      input[type="text"] {
-        text-align: right;
-        color: #fff;
-
-        &::placeholder {
-          color: #eee;
-        }
-      }
+    }
   }
 }

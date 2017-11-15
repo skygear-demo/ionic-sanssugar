@@ -30,6 +30,10 @@ page-info ion-content {
     color: #fff;
   }
 
+  .grid.no-padding, ion-row.no-padding, ion-col.no-padding {
+    padding:0;
+  }
+
   .app-title {
     color: #fff;
     margin-top: 100px;
@@ -42,20 +46,44 @@ page-info ion-content {
       height: 100px;
       width: 100px;
       border-radius: 50%;
-      background-color: rgba(255,255,255, 0.6);
-
+      background-color: rgba(255,255,255,0.6);
+      &[value="m"],
       &.selected {
-
+        background-color:rgb(61,148,202);
       }
     }
     button.female {
       height: 100px;
       width: 100px;
       border-radius: 50%;
-      background-color: rgba(255,255,255, 0.6);
+      background-color: rgba(255,255,255,0.6);
 
+      &[value="f"],
       &.selected {
+        background-color:rgb(208,121,153);
+      }
+    }
+  }
 
+  .input-group > :first-child {
+    margin-top: 20px;
+    border-top: 1px #fff solid;
+  }
+
+  ion-item.item-input.sanssugar-input {
+    background-color: rgba(255,255,255, 0.2);
+
+
+    ion-label {
+      color: #fff;
+    }
+
+    input {
+      text-align: right;
+      color: #fff;
+
+      &::placeholder {
+        color: #eee;
       }
     }
   }

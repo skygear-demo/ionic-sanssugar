@@ -27,7 +27,20 @@ import { Api } from '../api/api';
 export class User {
   _user: any;
 
-  constructor(public api: Api) { }
+  constructor(public api: Api) { 
+    this.height = -1;
+    this.weight = -1;
+    this.gender = nil;
+    this.name='';
+  }
+
+  setName(name) {
+    this.name = name;
+  }
+
+  setProfile(height, weiht,gender) {
+
+  }
 
   /**
    * Send a POST request to our login endpoint with the data

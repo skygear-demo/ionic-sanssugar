@@ -12,10 +12,13 @@ import { MainPage } from '../pages';
   templateUrl: 'info.html'
 })
 export class InfoPage {
-
+  mgender;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public items: Items) { }
+    public items: Items) {
+    this.mgender='m';
+
+  }
 
   next() {
     console.log("next");
@@ -25,4 +28,5 @@ export class InfoPage {
   back() {
     this.navCtrl.push('LandingPage');
   }
+
 }

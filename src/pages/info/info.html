@@ -1,6 +1,6 @@
 
 <ion-content text-center class="vertical-align-content">
-  <ion-grid>
+  <ion-grid class="no-padding">
     <!--Header-->
   <ion-row>
     <ion-col col-3><button ion-button color="light" clear (click)="back()">Back</button></ion-col>
@@ -12,54 +12,51 @@
 
     <!--Welcome-->
     <ion-row>
-      <ion-col col-md-6 push-md-3 col-sm-12 push-sm-0>
-      <p>A normal adult should not take more then 30g sugar per day. Sans Sugar will suggest a personalized limit according to information you provide.</p>
+      <ion-col col-md-6 push-md-3 col-sm-10 push-sm-1>
+      <p text-left>A normal adult should not take more then 30g sugar per day. Sans Sugar will suggest a personalized limit according to information you provide.</p>
       </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col col-12 push-xl-4 col-xl-4>
-        <p>Your Gender</p>
+        <h5>Your Gender</h5>
         <div class="select-gender">
-          <button ion-button color="light" clear class="male">M</button>
-          <button ion-button color="light" clear class="female">F</button>
+          <button ion-button color="light" clear class="male" (click)="this.mgender='m'" value="{{this.mgender}}">M</button>
+          <button ion-button color="light" clear class="female" (click)="this.mgender='f'" value="{{this.mgender}}">F</button>
         </div>
       </ion-col>
     </ion-row>
 
     <!--Name input-->
-    <ion-row>
-      <ion-col col-12 push-xl-4 col-xl-4>
-        <ion-list>
-          <ion-item>
-            <ion-label color="primary">Height</ion-label>
-            <ion-input placeholder="160cm"></ion-input>
-          </ion-item>
-        </ion-list>
+    <div class="input-group">
+    <ion-row class="no-padding">
+      <ion-col col-12 push-xl-4 col-xl-4 class="no-padding">
+        <ion-item class="sanssugar-input">
+          <ion-label color="primary">Height(cm)</ion-label>
+          <ion-input type="text" pattern="[0-9]*" decimal="true" placeholder="160cm" min="10" max="399"></ion-input>
+        </ion-item>
       </ion-col>
     </ion-row>
 
-    <ion-row>
-      <ion-col col-12 push-xl-4 col-xl-4>
-        <ion-list>
-          <ion-item>
-            <ion-label color="primary">Weight (kg)</ion-label>
-            <ion-input placeholder="50 kg"></ion-input>
-          </ion-item>
-        </ion-list>
+    <ion-row class="no-padding">
+      <ion-col col-12 push-xl-4 col-xl-4 class="no-padding">
+        <ion-item class="sanssugar-input">
+          <ion-label color="primary">Weight(kg)</ion-label>
+          <ion-input type="text" pattern="[0-9]*" decimal="true" placeholder="50 kg" min="10" max="999"></ion-input>
+        </ion-item>
       </ion-col>
     </ion-row>
 
-    <ion-row>
-      <ion-col col-12 push-xl-4 col-xl-4>
-        <ion-list>
-          <ion-item>
-            <ion-label color="primary">Birthday</ion-label>
-            <ion-input placeholder="29 OCT 1990"></ion-input>
-          </ion-item>
-        </ion-list>
+    <ion-row class="no-padding">
+      <ion-col col-12 push-xl-4 col-xl-4 class="no-padding">
+        <ion-item class="sanssugar-input">
+          <ion-label color="primary">Birthday</ion-label>
+          <ion-input type="date" placeholder="29 OCT 1990"></ion-input>
+        </ion-item>
       </ion-col>
     </ion-row>
+
+    </div>
     <!--Next-->
     <ion-row>
       <ion-col col-3></ion-col>
