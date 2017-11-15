@@ -28,7 +28,6 @@
     "@ionic/storage": "2.0.1",
     "@ngx-translate/core": "8.0.0",
     "@ngx-translate/http-loader": "^2.0.0",
-    "chart.js": "^2.7.1",
     "cordova-browser": "5.0.1",
     "cordova-ios": "^4.5.3",
     "cordova-plugin-device": "^1.1.4",
