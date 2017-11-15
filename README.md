@@ -1,6 +1,6 @@
-# The Ionic Super Starter 🎮
+# Sans Sugar App
 
-_Note: the Ionic Super Starter requires Ionic CLI 3._
+_Note: this Ionic App requires Ionic CLI 3._
 
 <img src="super2.png" width="400" />
 
@@ -21,10 +21,10 @@ One of the big advances in Ionic was moving from a rigid route-based navigation 
 
 ## <a name="getting-started"></a>Getting Started
 
-To test this starter out, install the latest version of the Ionic CLI and run:
+To test this app:
 
 ```bash
-ionic start mySuperApp super
+ionic serve
 ```
 
 ## Pages
@@ -37,9 +37,9 @@ If the tutorial is skipped but the user hasn't logged in yet, the Welcome page w
 
 Once the user is authenticated, the app will load with the `MainPage` which is set to be the `TabsPage` as the default.
 
-The entry and main pages can be configured easily by updating the corresponding variables in [src/pages/pages.ts](https://github.com/ionic-team/ionic-starter-super/blob/master/src/pages/pages.ts).
+The entry and main pages can be configured easily by updating the corresponding variables in [src/pages/pages.ts](src/pages/pages.ts).
 
-Please read the [Pages](https://github.com/ionic-team/ionic-starter-super/tree/master/src/pages) readme, and the readme for each page in the source for more documentation on each.
+Please read the [Pages](src/pages) readme, and the readme for each page in the source for more documentation on each.
 
 ## Providers
 
