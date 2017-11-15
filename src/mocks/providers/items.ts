@@ -1,3 +1,4 @@
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Injectable } from '@angular/core';
 
 import { Item } from '../../models/item';
@@ -13,7 +14,7 @@ export class Items {
   };
 
 
-  constructor() {
+  constructor(private sqlite: SQLite) {
     let items = [
       {
         "name": "Burt Bear",
