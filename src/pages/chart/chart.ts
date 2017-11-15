@@ -1,10 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
-import { Chart } from 'chart.js';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 import { Item } from '../../models/item';
 import { Items } from '../../providers/providers';
+
+import { Config } from '../../app/config'
+
+import { MainPage } from '../pages';
 
 @IonicPage()
 @Component({
@@ -12,9 +16,6 @@ import { Items } from '../../providers/providers';
   templateUrl: 'chart.html'
 })
 export class ChartPage {
-
-
-  @ViewChild('doughnutCanvas') doughnutCanvas;
  
   barChart: any;
 
@@ -23,8 +24,8 @@ export class ChartPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public items: Items,
-    private alertCtrl: AlertController) { }
-
+    private alertCtrl: AlertController,
+    private socialSharing: SocialSharing) { }
 
   /**
    * Perform a service for the proper items.
@@ -53,56 +54,43 @@ export class ChartPage {
   showDisclaimer() {
     let alert = this.alertCtrl.create({
         title: 'Disclaimer',
-        subTitle: 'Sans Sugar is for education purposes only and is not a substitute for medical advice from a doctor or healther provider.',
+        subTitle: 'Sans Sugar is for education purposes only and is not a substitute for medical advice from a doctor or health care provider.',
         buttons: ['OK']
       });
       alert.present();
   }
 
-      ionViewDidLoad() {
+  ionViewDidLoad() {
+    //  Disclaimer
+    var hasShownDisclaimer = localStorage.getItem("hasShownDisclaimer")
+    if(hasShownDisclaimer !== "true") {
+      this.showDisclaimer();
+      localStorage.setItem("hasShownDisclaimer", "true");
+    }
 
+    // Load doughnut Chart
 
-        //  Disclaimer
-        this.showDisclaimer();
- 
-        // this.barChart = new Chart(this.barCanvas.nativeElement, {
- 
-        //     type: 'bar',
-        //     data: {
-        //         labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-        //         datasets: [{
-        //             label: '# of Votes',
-        //             data: [12, 19, 3, 5, 2, 3],
-        //             backgroundColor: [
-        //                 'rgba(255, 99, 132, 0.2)',
-        //                 'rgba(54, 162, 235, 0.2)',
-        //                 'rgba(255, 206, 86, 0.2)',
-        //                 'rgba(75, 192, 192, 0.2)',
-        //                 'rgba(153, 102, 255, 0.2)',
-        //                 'rgba(255, 159, 64, 0.2)'
-        //             ],
-        //             borderColor: [
-        //                 'rgba(255,99,132,1)',
-        //                 'rgba(54, 162, 235, 1)',
-        //                 'rgba(255, 206, 86, 1)',
-        //                 'rgba(75, 192, 192, 1)',
-        //                 'rgba(153, 102, 255, 1)',
-        //                 'rgba(255, 159, 64, 1)'
-        //             ],
-        //             borderWidth: 1
-        //         }]
-        //     },
-        //     options: {
-        //         scales: {
-        //             yAxes: [{
-        //                 ticks: {
-        //                     beginAtZero:true
-        //                 }
-        //             }]
-        //         }
-        //     }
- 
-        // });
       }
+
+  add() {
+    //this.navCtrl.push('ListMasterPage');
+    this.navCtrl.push('SearchPage');
+  }
+
+  share() {
+    // Check if sharing via email is supported
+    this.socialSharing.canShareViaEmail().then(() => {
+      // Sharing via email is possible
+    }).catch(() => {
+      // Sharing via email is not possible
+    });
+
+    // Share via email
+    this.socialSharing.shareViaEmail('Body', 'Subject', ['recipient@example.org']).then(() => {
+      // Success!
+    }).catch(() => {
+      // Error!
+    });
+  }
 
 }

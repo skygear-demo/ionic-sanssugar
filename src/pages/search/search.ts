@@ -19,9 +19,10 @@ export class SearchPage {
    * Perform a service for the proper items.
    */
   getItems(ev) {
+
     let val = ev.target.value;
     if (!val || !val.trim()) {
-      this.currentItems = [];
+      this.currentItems = this.items.query(); // show all by default
       return;
     }
     this.currentItems = this.items.query({

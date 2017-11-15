@@ -16,3 +16,6 @@ export const WelcomePage = 'WelcomePage';
 
 export const LandingPage = 'LandingPage';
 export const InfoPage = 'InfoPage';
+
+export const ListMasterPage = 'ListMasterPage';
+export const SearchPage = 'SearchPage'
