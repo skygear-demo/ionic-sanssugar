@@ -37,8 +37,11 @@ page-chart ion-content {
   &.stage-3{
     background: linear-gradient(180deg, #fdc777, #fd595b);
   }
-
 }
+
+  p, h1, h2, h3, h4, h5 {
+    color: #fff;
+  }
 
   .ios, .md {
     page-chart {
@@ -53,7 +56,7 @@ page-chart ion-content {
    
     h3.title {
       color: #fff;
-      font-weight: 400;
+      font-weight: 300;
     }
 
   button.add-intake{
@@ -61,6 +64,30 @@ page-chart ion-content {
     img {
       height:57px;
       width:57px;
+    }
+  }
+
+
+  img.level-image {
+    width:375px;
+    margin: auto;
+    margin-top: -400px;
+    min-width: 375px;
+    transform: translatey(0px);
+    animation: float 8s ease-in-out infinite;
+  }
+
+  /* Floating effect */
+  @keyframes float {
+    0% {
+      transform: translatey(0px);
+    }
+    50% {
+
+      transform: translatey(-20px);
+    }
+    100% {
+      transform: translatey(0px);
     }
   }
 
@@ -72,8 +99,8 @@ page-chart ion-content {
 /* Chart */
   $configs: (
   doughnut-chart: (
-    svgSize: 200px,
-    percentage: 79,
+    svgSize: 300px,
+    percentage: 0,
     strokeWidth: 4px,
     outerStrokeWidth: 8px,
     backgroundColor: rgba(255,255,255, 0.5),
@@ -81,7 +108,7 @@ page-chart ion-content {
     labelColor: rgba(255,255,255, 0.9),
     labelFontSize: 2.5rem,
     duration: 1s,
-    animationDelay: 0.5s
+    animationDelay: 1s
   )
   );
 
@@ -110,12 +137,17 @@ page-chart ion-content {
       
       &.animate {
         svg .circle-foreground {
-          animation: offset map-get($param, duration) ease-in-out forwards;
+          animation-duration: map-get($param, duration);
+          animation-timing-function: ease-in-out;
+          animation-fill-mode: both;
+          animation-name: offset;
           animation-delay: map-get($param, animationDelay);
+          animation-iteration-count: 1;
         }
         figcaption:after {
-          animation: #{$chart}-label map-get($param, duration) steps(map-get($param, percentage)) forwards;
-          animation-delay: map-get($param, animationDelay);
+          /*animation: #{$chart}-label map-get($param, duration) steps(map-get($param, percentage)) forwards;*/
+          /*animation: #{$chart}-label map-get($param, duration) steps(map-get($param, percentage)) forwards;*/
+          /*animation-delay: map-get($param, animationDelay);*/
         }
       }
 
@@ -153,15 +185,15 @@ page-chart ion-content {
         text-align: center;
         color: map-get($param, labelColor);
         position: absolute;
-        top: calc(50% - #{map-get($param, labelFontSize)/2});
+        top: calc(100% - #{map-get($param, labelFontSize)/2});
         left: 0;
         font-size: 0;
         &:after {
-          display: inline-block;
+          /*display: inline-block;
           content: $labelData;
           white-space: pre;
           font-size: map-get($param, labelFontSize);
-          line-height: map-get($param, labelFontSize);
+          line-height: map-get($param, labelFontSize);*/
         }
       }
     }

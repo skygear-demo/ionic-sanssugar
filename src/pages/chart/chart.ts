@@ -4,7 +4,9 @@ import { AlertController } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 import { Item } from '../../models/item';
-import { Items } from '../../providers/providers';
+
+import { Tracking } from '../../models/tracking';
+import { Trackings, Items } from '../../providers/providers';
 
 import { Config } from '../../app/config'
 
@@ -20,12 +22,37 @@ export class ChartPage {
   barChart: any;
 
   currentItems: any = [];
+  todaySum: number;
+  myLimit: number;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public items: Items,
+    public trackings: Trackings,
     private alertCtrl: AlertController,
     private socialSharing: SocialSharing) { }
+
+  updateSummary() {
+    this.todaySum = this.trackings.getTodaySummary();
+    this.myLimit = this.trackings.getMyLimit();
+
+    var percent = (this.todaySum / this.myLimit)* 100;
+    percent = percent > 100? 100 : percent;
+
+    // animate the chart
+    var todayChart = document.getElementById('today-chart');
+
+    // percent
+    var percentageCircle = document.getElementById('percentage-circle');
+    console.log(percent);
+
+    // /*Hard coded percentage formula*/
+    var c = (300 - 4) * 3.14;
+    var cOffSet = (percent/100*0.8) * c;
+    percentageCircle.setAttribute("style","stroke-dasharray:"+cOffSet+"px "+c+"px; stroke-dashoffset:"+cOffSet+"px");
+
+    todayChart.className += " animate";
+  }
 
   /**
    * Perform a service for the proper items.
@@ -69,7 +96,7 @@ export class ChartPage {
     }
 
     // Load doughnut Chart
-
+    this.updateSummary();
       }
 
   add() {

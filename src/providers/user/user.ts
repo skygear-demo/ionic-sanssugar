@@ -27,10 +27,15 @@ import { Api } from '../api/api';
 export class User {
   _user: any;
 
+  height: number;
+  weight: number;
+  gender: string;
+  name: string;
+
   constructor(public api: Api) { 
     this.height = -1;
     this.weight = -1;
-    this.gender = nil;
+    this.gender = null;
     this.name='';
   }
 
