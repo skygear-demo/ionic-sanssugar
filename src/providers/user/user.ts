@@ -37,13 +37,13 @@ export class User {
   gender: string;
   birthday: Date;
   name: string;
-  skygear: Any;
+  skygear;
 
   constructor(public api: Api, private skygearService: SkygearService) { 
-    this.height = 160;
-    this.weight = 50;
-    this.gender = 'm';
-    this.name='';
+    this.height = 160; // default
+    this.weight = 50; // default
+    this.gender = 'm'; // default
+    this.name=''; // default
   }
 
   getCurrentUser () {
@@ -71,19 +71,20 @@ export class User {
 
   setName(name) {
     this.name = name;
+    localStorage.setItem("name", name);
     console.log("User name set:"+name);
   }
 
-  setProfile(height, weight, gender) {
-    if(height != null) {
-      this.height = height;
-    }
-    if(weight != null) {
-      this.weight = weight;
-    }
-    if(gender != null) {
-      this.gender = gender;
-    }
+  setWeight(weight) {
+    localStorage.setItem("weight", weight);
+  }
+
+  setHeight(height) {
+    localStorage.setItem("height", height);
+  }
+
+  setGender(gender) {
+    localStorage.setItem("gender", gender);
   }
 
   signupSkygear() {
