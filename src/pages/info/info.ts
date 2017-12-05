@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 
 import { Item } from '../../models/item';
 import { Items, User } from '../../providers/providers';
@@ -16,8 +16,10 @@ export class InfoPage {
   height: number;
   weight: number;
   birthday: Date;
+  loading: Any;
 
   constructor(public navCtrl: NavController,
+    public loadingCtrl: LoadingController,
     public navParams: NavParams,
     public items: Items,
     public user: User) {
@@ -25,6 +27,14 @@ export class InfoPage {
     this.height = user.height;
     this.weight = user.weight;
     this.birthday = user.birthday;
+  }
+
+  presentLoadingDefault() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
+    this.loading.present();
 
   }
 
@@ -32,13 +42,14 @@ export class InfoPage {
     console.log("next");
 
     // Register and signup
+    this.presentLoadingDefault();
     this.user.signupSkygear().then((user)=> {
       this.navCtrl.push('ChartPage');
+      this.loading.dismiss();
     }, (error) => {
       console.log("error");
     });
 
-    
   }
 
   back() {
