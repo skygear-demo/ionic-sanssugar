@@ -28,6 +28,7 @@ import { Settings } from '../providers/providers';
 })
 export class MyApp {
   rootPage = FirstRunPage;
+  // Show Chart page first, but if no user, we shall redirect to landing page
 
   @ViewChild(Nav) nav: Nav;
 

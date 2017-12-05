@@ -15,14 +15,10 @@ export class SkygearService {
       'apiKey': 'c140232c1b4b48d2813fc2d014a5696b',
     }).then(()=> {
       this.isConfigurated = true
-      console.log("Signing up");
-      return Promise.resolve(skygear);
-      // return skygear.auth.signupAnonymously();
-    })/*.then(() => {
-      console.log("Done");
-      this.isConfigurated = true
-    });
-    */
+      // return Promise.resolve(skygear);
+      return skygear;
+    })
+
     return promise;
   }
 }

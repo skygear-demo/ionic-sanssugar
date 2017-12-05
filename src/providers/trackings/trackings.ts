@@ -10,10 +10,10 @@ export class Trackings {
     // return this.api.get('/trackings', params);
   }
 
-  add(tracking: Trackings) {
+  add(tracking: Tracking) {
   }
 
-  delete(tracking: Trackings) {
+  delete(tracking: Tracking) {
   }
 
   getTodaySummary() {
@@ -22,6 +22,10 @@ export class Trackings {
 
   getMyLimit() {
     return 26;
+  }
+
+  getByDate() {
+    
   }
 
 }

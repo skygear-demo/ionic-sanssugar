@@ -1,18 +1,16 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>ADD INTAKE</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-<ion-content>
+<ion-content class="no-padding">
   <ion-searchbar (ionInput)="getItems($event)" placeholder="Search"></ion-searchbar>
-  <ion-buttons>
-    <button ion-button full (click)="addItem()">
+  
+    <button ion-button full (click)="addItem()" class="add-button">
       <ion-icon name="add"></ion-icon> INPUT MANUALLY
     </button>
-  </ion-buttons>
+  
   <ion-list>
     <button ion-item (click)="openItem(item)" *ngFor="let item of currentItems">
       <ion-avatar item-start>

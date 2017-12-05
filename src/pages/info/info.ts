@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Item } from '../../models/item';
-import { Items } from '../../providers/providers';
+import { Items, User } from '../../providers/providers';
 
 import { MainPage } from '../pages';
 
@@ -12,17 +12,33 @@ import { MainPage } from '../pages';
   templateUrl: 'info.html'
 })
 export class InfoPage {
-  mgender;
+  gender: string;
+  height: number;
+  weight: number;
+  birthday: Date;
+
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public items: Items) {
-    this.mgender='m';
+    public items: Items,
+    public user: User) {
+    this.gender = user.gender;
+    this.height = user.height;
+    this.weight = user.weight;
+    this.birthday = user.birthday;
 
   }
 
   next() {
     console.log("next");
-    this.navCtrl.push('ChartPage');
+
+    // Register and signup
+    this.user.signupSkygear().then((user)=> {
+      this.navCtrl.push('ChartPage');
+    }, (error) => {
+      console.log("error");
+    });
+
+    
   }
 
   back() {

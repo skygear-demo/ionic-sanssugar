@@ -1,6 +1,8 @@
+import { Item } from './item';
+
 export class Tracking {
  
-    constructor(public title: string, public items: any[]){
+    constructor(public title: string, public items: Item[], public date:Date){
  
     }
 
@@ -17,6 +19,5 @@ export class Tracking {
                 this.items.splice(i, 1);
             }
         }
- 
     }
 }

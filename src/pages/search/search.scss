@@ -1,3 +1,12 @@
 page-search {
+  .add-button {
+    background-color: rgb(84,186,252);
+    font-size: 1.2em;
+    letter-spacing: 2px;
+    height: 5em;
 
+    &:hover {
+      background-color: rgb(50,146,210);
+    }
+  }
 }

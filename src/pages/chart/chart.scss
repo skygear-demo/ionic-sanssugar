@@ -39,7 +39,12 @@ page-chart ion-content {
   }
 }
 
-  p, h1, h2, h3, h4, h5 {
+page-chart p,
+page-chart h1,
+page-chart h2,
+page-chart h3,
+page-chart h4,
+page-chart h5 {
     color: #fff;
   }
 
@@ -67,6 +72,14 @@ page-chart ion-content {
     }
   }
 
+  .gram {
+    font-weight: 600;
+    font-size: 3em;
+  }
+  .gram-unit {
+    font-weight: 400;
+    font-size: 2.2em;
+  }
 
   img.level-image {
     width:375px;
@@ -108,7 +121,7 @@ page-chart ion-content {
     labelColor: rgba(255,255,255, 0.9),
     labelFontSize: 2.5rem,
     duration: 1s,
-    animationDelay: 1s
+    animationDelay: 0.5s
   )
   );
 

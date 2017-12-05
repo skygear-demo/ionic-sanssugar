@@ -6,11 +6,13 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { Item } from '../../models/item';
 
 import { Tracking } from '../../models/tracking';
-import { Trackings, Items } from '../../providers/providers';
+import { Trackings, Items, User } from '../../providers/providers';
 
 import { Config } from '../../app/config'
 
 import { MainPage } from '../pages';
+import moment from 'moment';
+
 
 @IonicPage()
 @Component({
@@ -24,15 +26,23 @@ export class ChartPage {
   currentItems: any = [];
   todaySum: number;
   myLimit: number;
+  todayText: string;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public items: Items,
     public trackings: Trackings,
+    public user: User,
     private alertCtrl: AlertController,
     private socialSharing: SocialSharing) { }
 
+  getTodayString() {
+    let date = moment().format('D MMM YYYY');
+    return date;
+  }
+
   updateSummary() {
+    this.todayText = this.getTodayString();
     this.todaySum = this.trackings.getTodaySummary();
     this.myLimit = this.trackings.getMyLimit();
 
@@ -52,6 +62,8 @@ export class ChartPage {
     percentageCircle.setAttribute("style","stroke-dasharray:"+cOffSet+"px "+c+"px; stroke-dashoffset:"+cOffSet+"px");
 
     todayChart.className += " animate";
+
+    /* TODO update style when level changes */
   }
 
   /**
@@ -88,16 +100,27 @@ export class ChartPage {
   }
 
   ionViewDidLoad() {
+    // Check User Logged in
+    this.user.getCurrentUser().then((user) => {
+      console.log(user);
+      if (!user) {
+        this.navCtrl.push("LandingPage");
+      } else {
+        this.initChartView();
+      }
+    })
+  }
+
+  initChartView() {
     //  Disclaimer
     var hasShownDisclaimer = localStorage.getItem("hasShownDisclaimer")
     if(hasShownDisclaimer !== "true") {
       this.showDisclaimer();
       localStorage.setItem("hasShownDisclaimer", "true");
     }
-
     // Load doughnut Chart
     this.updateSummary();
-      }
+  }
 
   add() {
     //this.navCtrl.push('ListMasterPage');

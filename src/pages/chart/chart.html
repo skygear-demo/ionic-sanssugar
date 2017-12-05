@@ -11,7 +11,7 @@
 <ion-grid>
   <ion-row>
     <ion-col col-3><button ion-button color="light" clear (click)="share()">Share</button></ion-col>
-    <ion-col col-6><button ion-button color="light" clear>30 OCT 2017</button></ion-col>
+    <ion-col col-6><button ion-button color="light" clear>{{this.todayText}}</button></ion-col>
     <ion-col col-3></ion-col>
   </ion-row>
   <ion-row>
@@ -26,14 +26,14 @@
           <circle class="circle-background"/>
           <circle class="circle-foreground" id="percentage-circle"/>
         </svg>
-        <figcaption data-percentage="12">% of sugar consumed daily.</figcaption>
+        <!-- <figcaption data-percentage="12">% of sugar consumed daily.</figcaption> -->
       </figure>
       <img src="../../assets/img/surgar-graphic-level1.png" class="level-image">
-
     </ion-col>
   </ion-row>
   <ion-row>
-    <ion-col col-6 offset-3><b>{{this.todaySum}} g</b><br>out of 26g per day<br></ion-col>
+    <ion-col col-6 offset-3>
+    <p><span class="gram">{{this.todaySum}} </span><span class="gram-unit">g</span> <br>out of {{this.myLimit}}g per day</p></ion-col>
   </ion-row>
 
   <ion-row>

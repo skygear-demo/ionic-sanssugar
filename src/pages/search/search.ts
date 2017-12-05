@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 
 import { Item } from '../../models/item';
-import { Items } from '../../providers/providers';
+import { Tracking } from '../../models/tracking';
+import { Items, Trackings } from '../../providers/providers';
 
 @IonicPage()
 @Component({
@@ -16,7 +17,9 @@ export class SearchPage {
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public modalCtrl: ModalController,
-    public items: Items,) {
+    public items: Items,
+    public trackings: Trackings
+    ) {
     this.currentItems = this.items.query();
   }
 
@@ -43,6 +46,15 @@ export class SearchPage {
     this.navCtrl.push('ItemDetailPage', {
       item: item
     });
+  }
+
+  addTracking() {
+    var tracking = new Tracking("Test", 
+      new Item({
+        "Name":"cola", "sugar": 2.1
+      }, 
+      new Date()));
+    this.trackings.add(tracking);
   }
 
   addItem() {

@@ -25,8 +25,12 @@
         <ion-list>
           <ion-item class="sanssugar-input">
             <ion-label>Your Name</ion-label>
-            <ion-input placeholder="Input your name"></ion-input>
-          </ion-item>
+            <ion-input placeholder="Input your name" name="username" [(ngModel)]="username"></ion-input>
+          </ion-item> 
+          <ion-item class="sanssugar-input">
+            <ion-label>Rmail</ion-label>
+            <ion-input type="email" placeholder="Email Address" name="email" [(ngModel)]="email"></ion-input>
+          </ion-item> 
         </ion-list>
       </ion-col>
 
