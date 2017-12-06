@@ -5,6 +5,10 @@ import { Item } from '../../models/item';
 import { Tracking } from '../../models/tracking';
 import { Items, Trackings } from '../../providers/providers';
 
+import * as Enums from '../../app/enums';
+
+import { HTTP } from '@ionic-native/http';
+
 @IonicPage()
 @Component({
   selector: 'page-search',
@@ -18,10 +22,38 @@ export class SearchPage {
     public navParams: NavParams,
     public modalCtrl: ModalController,
     public items: Items,
-    public trackings: Trackings
+    public trackings: Trackings,
+    private http: HTTP
     ) {
     this.currentItems = this.items.query();
   }
+
+
+  ionViewDidLoad() {
+    this.searchFromAPI();
+
+    console.log(Enums.FoodType);
+
+  }
+
+  /** Search from API **/
+
+  searchFromAPI() {
+    this.http.get('https://world.openfoodfacts.org/api/v0/product/737628064502.json', {}, {})
+    .then(data => {
+
+      console.log(data.status);
+      console.log(data.data); // data received by server
+      console.log(data.headers);
+
+    }).catch(error => {
+      console.log(error)
+      console.log(error.status);
+      console.log(error.error); // error message as string
+      console.log(error.headers);
+      });
+  }
+
 
   /**
    * Perform a service for the proper items.
@@ -49,12 +81,12 @@ export class SearchPage {
   }
 
   addTracking() {
-    var tracking = new Tracking("Test", 
-      new Item({
-        "Name":"cola", "sugar": 2.1
-      }, 
-      new Date()));
-    this.trackings.add(tracking);
+    // var tracking = new Tracking("Test", 
+    //   new Item({
+    //     "Name":"cola", "sugar": 2.1
+    //   }, 
+    //   new Date()));
+    // this.trackings.add(tracking);
   }
 
   addItem() {

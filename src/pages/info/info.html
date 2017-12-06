@@ -21,8 +21,8 @@
       <ion-col col-12 push-xl-4 col-xl-4>
         <h5>Your Gender</h5>
         <div class="select-gender">
-          <button ion-button color="light" clear class="male" (click)="this.gender='m'" value="{{this.gender}}">M</button>
-          <button ion-button color="light" clear class="female" (click)="this.gender='f'" value="{{this.gender}}">F</button>
+          <button ion-button color="light" clear class="male" (click)="updateGender('m')" value="{{this.gender}}">M</button>
+          <button ion-button color="light" clear class="female" (click)="updateGender('f')" value="{{this.gender}}">F</button>
         </div>
       </ion-col>
     </ion-row>
@@ -51,7 +51,7 @@
       <ion-col col-12 push-xl-4 col-xl-4 class="no-padding">
         <ion-item class="sanssugar-input">
           <ion-label color="primary">Birthday</ion-label>
-          <ion-input type="date" placeholder="29 OCT 1990"  [(ngModel)]="birthday"></ion-input>
+          <ion-datetime displayFormat="DD MMM YYYY" placeholder="29 Oct 1990" [(ngModel)]="birthday"></ion-datetime>
         </ion-item>
       </ion-col>
     </ion-row>

@@ -81,13 +81,30 @@ page-chart h5 {
     font-size: 2.2em;
   }
 
-  img.level-image {
+  div.level-image {
+    display: block;
     width:375px;
+    height: 320px;
     margin: auto;
-    margin-top: -400px;
+    margin-top: -300px;
     min-width: 375px;
     transform: translatey(0px);
     animation: float 8s ease-in-out infinite;
+    background-size: contain;
+    background-image: url('../../assets/img/surgar-graphic-level1.png');
+    background-repeat: no-repeat;
+
+    &.stage-1 {
+      background-image: url('../../assets/img/surgar-graphic-level1.png');
+    }
+
+    &.stage-2 {
+      background-image: url('../../assets/img/surgar-graphic-level2.png');
+    }
+
+    &.stage-3{
+      background-image: url('../../assets/img/surgar-graphic-level3.png');
+    }
   }
 
   /* Floating effect */
@@ -221,4 +238,15 @@ page-chart h5 {
       stroke-dashoffset: 0;
     }
   }
+
+  .doughnut-chart {
+    &.stage-2 svg .circle-foreground {
+        stroke: rgb(255, 250, 109);
+    }
+
+    &.stage-3 svg .circle-foreground {
+        stroke: rgb(253, 26, 32);
+    }
+  }
+
 }

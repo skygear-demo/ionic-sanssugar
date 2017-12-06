@@ -19,6 +19,7 @@ import { MyApp } from './app.component';
 
 import { SkygearService } from './skygear.service';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { HTTP } from '@ionic-native/http';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -75,7 +76,8 @@ export function provideSettings(storage: Storage) {
     { provide: ErrorHandler, useClass: IonicErrorHandler },
      SkygearService,
      SocialSharing,
-     SQLite
+     SQLite,
+     HTTP
   ]
 })
 export class AppModule { }

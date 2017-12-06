@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { AlertController } from 'ionic-angular';
+import { AlertController, LoadingController } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 import { Item } from '../../models/item';
@@ -25,8 +25,10 @@ export class ChartPage {
 
   currentItems: any = [];
   todaySum: number;
+  todayRemain: number;
   myLimit: number;
   todayText: string;
+  loading: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -34,6 +36,7 @@ export class ChartPage {
     public trackings: Trackings,
     public user: User,
     private alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
     private socialSharing: SocialSharing) { }
 
   getTodayString() {
@@ -43,8 +46,11 @@ export class ChartPage {
 
   updateSummary() {
     this.todayText = this.getTodayString();
-    this.todaySum = this.trackings.getTodaySummary();
     this.myLimit = this.trackings.getMyLimit();
+    this.todaySum = this.trackings.getTodaySummary();
+    this.todayRemain = this.myLimit - this.todaySum;
+    this.todayRemain = (this.todayRemain > 0)? this.todayRemain : 0;
+    
 
     var percent = (this.todaySum / this.myLimit)* 100;
     percent = percent > 100? 100 : percent;
@@ -64,6 +70,25 @@ export class ChartPage {
     todayChart.className += " animate";
 
     /* TODO update style when level changes */
+    
+    if (percent < 50) {
+      console.log("stage 1");
+      document.getElementById('chart-main-content').className += " stage-1";
+      document.getElementById('chart-img').className += " stage-2";
+
+      todayChart.className += " stage-1";
+
+    } else if (percent >= 50 && percent < 75) {
+      document.getElementById('chart-main-content').className += " stage-2";
+      document.getElementById('chart-img').className += " stage-2";
+      todayChart.className += " stage-2";
+      console.log("stage 2");
+    } else if (percent >= 75) {
+      document.getElementById('chart-main-content').className += " stage-3";
+      document.getElementById('chart-img').className += " stage-3";
+      todayChart.className += " stage-3";
+      console.log("stage 3");
+    }
   }
 
   /**
@@ -104,6 +129,7 @@ export class ChartPage {
     this.user.getCurrentUser().then((user) => {
       console.log(user);
       if (!user) {
+        this.navCtrl.swipeBackEnabled=false;
         this.navCtrl.push("LandingPage");
       } else {
         this.initChartView();
@@ -127,6 +153,10 @@ export class ChartPage {
     this.navCtrl.push('SearchPage');
   }
 
+  showHistory() {
+    this.navCtrl.push('ListMasterPage');
+  }
+
   share() {
     // Check if sharing via email is supported
     this.socialSharing.canShareViaEmail().then(() => {
@@ -140,6 +170,40 @@ export class ChartPage {
       // Success!
     }).catch(() => {
       // Error!
+    });
+
+    this.socialSharing.shareViaFacebook('Hey','img.png','url').then(() => {
+      // Success!
+    }).catch(() => {
+      // Error!
+    });
+
+    this.socialSharing.share('message', 'subject', 'file', 'url').then(() => {
+      // Success!
+    }).catch(() => {
+      // Error!
+    });
+  }
+
+
+  presentLoadingDefault(msg) {
+    this.loading = this.loadingCtrl.create({
+      content: msg
+    });
+
+    this.loading.present();
+  }
+
+
+  // Test only 
+  logout() {
+    // Register and signup
+    this.presentLoadingDefault('Logging out...');
+    this.user.logoutSkygear().then((user)=> {
+      this.navCtrl.push('ChartPage');
+      this.loading.dismiss();
+    }, (error) => {
+      console.log("error");
     });
   }
 

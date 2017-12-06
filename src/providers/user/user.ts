@@ -35,6 +35,7 @@ export class User {
   height: number;
   weight: number;
   gender: string;
+  email: string;
   birthday: Date;
   name: string;
   skygear;
@@ -75,15 +76,24 @@ export class User {
     console.log("User name set:"+name);
   }
 
+  setEmail(email) {
+    this.email = email;
+    localStorage.setItem("email", email);
+    console.log("User email set:"+email);
+  }
+
   setWeight(weight) {
+    this.weight = weight;
     localStorage.setItem("weight", weight);
   }
 
   setHeight(height) {
+    this.height = height;
     localStorage.setItem("height", height);
   }
 
   setGender(gender) {
+    this.gender=gender;
     localStorage.setItem("gender", gender);
   }
 
@@ -95,6 +105,27 @@ export class User {
           this.skygear = skygear;
           console.log(`Skygear OK`);
           skygear.auth.signupAnonymously().then((user)=> {
+            console.log(user);
+            resolve(user);
+          });
+        })
+        .catch((error) => {
+          console.log(`Skygear Error`);
+          console.error(error);
+          reject(error);
+        });
+      });
+      return skygearPromise;
+  }
+
+  logoutSkygear() {
+    var skygear = this.skygearService.getSkygear();
+    var skygearPromise = new Promise((resolve, reject) => {
+      this.skygearService.getSkygear()
+        .then((skygear) => {
+          this.skygear = skygear;
+          console.log(`Skygear OK`);
+          skygear.auth.logout().then((user)=> {
             console.log(user);
             resolve(user);
           });

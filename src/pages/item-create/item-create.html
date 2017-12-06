@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'ITEM_CREATE_TITLE' | translate }}</ion-title>
+    <ion-title>{{ 'Add Intake' | translate }}</ion-title>
     <ion-buttons start>
       <button ion-button (click)="cancel()">
         <span color="primary" showWhen="ios">
@@ -37,10 +37,14 @@
     </div>
     <ion-list>
       <ion-item>
-        <ion-input type="text" placeholder="{{ 'ITEM_NAME_PLACEHOLDER' | translate }}" formControlName="name"></ion-input>
+        <ion-input type="text" placeholder="Food Name" formControlName="name"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input type="number" placeholder="{{ 'ITEM_ABOUT_PLACEHOLDER' | translate }}" formControlName="sugarAmount"></ion-input>
+        <ion-input type="number" placeholder="1.0 g" formControlName="sugarAmount" min="0"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input type="text" placeholder="Food Type" formControlName="type"></ion-input>
       </ion-item>
     </ion-list>
   </form>

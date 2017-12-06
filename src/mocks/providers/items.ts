@@ -18,39 +18,39 @@ export class Items {
   constructor(private sqlite: SQLite) {
     let items = [
       {
-        "name": "Burt Bear",
-        "profilePic": "assets/img/speakers/bear.jpg",
-        "about": "Burt is a Bear."
+        "name": "Coke",
+        "profilePic": "http://icons.iconarchive.com/icons/michael/coke-pepsi/512/Coca-Cola-Can-icon.png",
+        "about": ""
       },
       {
-        "name": "Charlie Cheetah",
-        "profilePic": "assets/img/speakers/cheetah.jpg",
-        "about": "Charlie is a Cheetah."
+        "name": "Fanta",
+        "profilePic": "",
+        "about": ""
       },
       {
-        "name": "Donald Duck",
-        "profilePic": "assets/img/speakers/duck.jpg",
-        "about": "Donald is a Duck."
+        "name": "Sprite",
+        "profilePic": "",
+        "about": ""
       },
       {
-        "name": "Eva Eagle",
-        "profilePic": "assets/img/speakers/eagle.jpg",
-        "about": "Eva is an Eagle."
+        "name": "Dew",
+        "profilePic": "",
+        "about": ""
       },
       {
-        "name": "Ellie Elephant",
-        "profilePic": "assets/img/speakers/elephant.jpg",
-        "about": "Ellie is an Elephant."
+        "name": "Syrup",
+        "profilePic": "",
+        "about": ""
       },
       {
-        "name": "Molly Mouse",
-        "profilePic": "assets/img/speakers/mouse.jpg",
-        "about": "Molly is a Mouse."
+        "name": "Tea",
+        "profilePic": "",
+        "about": ""
       },
       {
-        "name": "Paul Puppy",
-        "profilePic": "assets/img/speakers/puppy.jpg",
-        "about": "Paul is a Puppy."
+        "name": "Chocolate Bar",
+        "profilePic": "",
+        "about": ""
       }
     ];
 
@@ -88,6 +88,23 @@ export class Items {
       //   }
       // })
 
+
+  // initDB() {
+  //   this.sqlite.create({
+  //     name: 'data.db',
+  //     location: 'default'
+  //   })
+  //     .then((db: SQLiteObject) => {
+
+
+  //       db.executeSql('create table trackings(name VARCHAR(32))', {})
+  //         .then(() => console.log('Executed SQL'))
+  //         .catch(e => console.log(e));
+
+  //     })
+  //     .catch(e => console.log(e));
+
+  // }
 
   getData() {
     this.sqlite.create({

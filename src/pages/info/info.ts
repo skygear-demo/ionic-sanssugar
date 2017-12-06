@@ -16,40 +16,48 @@ export class InfoPage {
   height: number;
   weight: number;
   birthday: Date;
-  loading: Any;
+  loading: any;
 
   constructor(public navCtrl: NavController,
     public loadingCtrl: LoadingController,
     public navParams: NavParams,
     public items: Items,
     public user: User) {
-    this.gender = user.gender;
-    this.height = user.height;
-    this.weight = user.weight;
-    this.birthday = user.birthday;
+    this.gender = this.user.gender;
+    this.height = this.user.height;
+    this.weight = this.user.weight;
+    this.birthday = this.user.birthday;
   }
 
-  presentLoadingDefault() {
+  presentLoadingDefault(msg) {
     this.loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: msg
     });
 
     this.loading.present();
 
   }
 
+  updateGender(gender) {
+    this.user.setGender(gender);
+    this.gender = gender;
+  }
+
+  ionViewDidLoad() {
+    this.navCtrl.swipeBackEnabled=true;
+  }
+
   next() {
     console.log("next");
 
     // Register and signup
-    this.presentLoadingDefault();
+    this.presentLoadingDefault('Signing you in...');
     this.user.signupSkygear().then((user)=> {
       this.navCtrl.push('ChartPage');
       this.loading.dismiss();
     }, (error) => {
       console.log("error");
     });
-
   }
 
   back() {
