@@ -47,48 +47,50 @@ export class ChartPage {
   updateSummary() {
     this.todayText = this.getTodayString();
     this.myLimit = this.trackings.getMyLimit();
-    this.todaySum = this.trackings.getTodaySummary();
-    this.todayRemain = this.myLimit - this.todaySum;
-    this.todayRemain = (this.todayRemain > 0)? this.todayRemain : 0;
-    
+    this.trackings.getDateSugarTotal(new Date()).then(sum => {
+      this.todaySum = sum;
+      this.todayRemain = Math.round((this.myLimit - this.todaySum) * 100) / 100;
+      this.todayRemain = (this.todayRemain > 0)? this.todayRemain : 0;
 
-    var percent = (this.todaySum / this.myLimit)* 100;
-    percent = percent > 100? 100 : percent;
+      console.log('todaySum', this.todaySum);
+      var percent = (this.todaySum / this.myLimit)* 100;
+      percent = percent > 100? 100 : percent;
 
-    // animate the chart
-    var todayChart = document.getElementById('today-chart');
+      // animate the chart
+      var todayChart = document.getElementById('today-chart');
 
-    // percent
-    var percentageCircle = document.getElementById('percentage-circle');
-    console.log(percent);
+      // percent
+      var percentageCircle = document.getElementById('percentage-circle');
+      console.log(percent);
 
-    // /*Hard coded percentage formula*/
-    var c = (300 - 4) * 3.14;
-    var cOffSet = (percent/100*0.8) * c;
-    percentageCircle.setAttribute("style","stroke-dasharray:"+cOffSet+"px "+c+"px; stroke-dashoffset:"+cOffSet+"px");
+      // /*Hard coded percentage formula*/
+      var c = (300 - 4) * 3.14;
+      var cOffSet = (percent/100*0.8) * c;
+      percentageCircle.setAttribute("style","stroke-dasharray:"+cOffSet+"px "+c+"px; stroke-dashoffset:"+cOffSet+"px");
 
-    todayChart.className += " animate";
+      todayChart.className += " animate";
 
-    /* TODO update style when level changes */
-    
-    if (percent < 50) {
-      console.log("stage 1");
-      document.getElementById('chart-main-content').className += " stage-1";
-      document.getElementById('chart-img').className += " stage-2";
+      /* TODO update style when level changes */
+      
+      if (percent < 50) {
+        console.log("stage 1");
+        document.getElementById('chart-main-content').className += " stage-1";
+        document.getElementById('chart-img').className += " stage-1";
 
-      todayChart.className += " stage-1";
+        todayChart.className += " stage-1";
 
-    } else if (percent >= 50 && percent < 75) {
-      document.getElementById('chart-main-content').className += " stage-2";
-      document.getElementById('chart-img').className += " stage-2";
-      todayChart.className += " stage-2";
-      console.log("stage 2");
-    } else if (percent >= 75) {
-      document.getElementById('chart-main-content').className += " stage-3";
-      document.getElementById('chart-img').className += " stage-3";
-      todayChart.className += " stage-3";
-      console.log("stage 3");
-    }
+      } else if (percent >= 50 && percent < 75) {
+        document.getElementById('chart-main-content').className += " stage-2";
+        document.getElementById('chart-img').className += " stage-2";
+        todayChart.className += " stage-2";
+        console.log("stage 2");
+      } else if (percent >= 75) {
+        document.getElementById('chart-main-content').className += " stage-3";
+        document.getElementById('chart-img').className += " stage-3";
+        todayChart.className += " stage-3";
+        console.log("stage 3");
+      }
+    });
   }
 
   /**
@@ -137,6 +139,11 @@ export class ChartPage {
     })
   }
 
+  ionViewWillEnter() {
+    // Load doughnut Chart
+    this.updateSummary();
+  }
+
   initChartView() {
     //  Disclaimer
     var hasShownDisclaimer = localStorage.getItem("hasShownDisclaimer")
@@ -144,8 +151,7 @@ export class ChartPage {
       this.showDisclaimer();
       localStorage.setItem("hasShownDisclaimer", "true");
     }
-    // Load doughnut Chart
-    this.updateSummary();
+
   }
 
   add() {

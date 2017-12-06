@@ -6,7 +6,7 @@
 
 <ion-content class="no-padding">
   <ion-searchbar (ionInput)="getItems($event)" placeholder="Search"></ion-searchbar>
-  
+    <button click ion-button full (click)="addTracking()">Testing add tracking</button>
     <button ion-button full (click)="addItem()" class="add-button">
       <ion-icon name="add"></ion-icon> INPUT MANUALLY
     </button>

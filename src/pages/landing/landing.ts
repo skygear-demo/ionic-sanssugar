@@ -42,14 +42,19 @@ export class LandingPage {
 
   }
 
+  checkEmail() {
+    return (this.email != "");
+
+  }
+
   next() {
     console.log("next");
-    if (this.checkName()) {
+    if (this.checkName() && this.checkEmail()) {
       this.user.name = this.username;
       this.user.email = this.email;
       this.navCtrl.push('InfoPage');
     } else {
-      this.showWarning('Enter your name.', 'Please let us know how to call you. Enter your name to continue.')
+      this.showWarning('Hey, missing informatino.', 'Please enter your name and email to continue.')
     }
   }
 }

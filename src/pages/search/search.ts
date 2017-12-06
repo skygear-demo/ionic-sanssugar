@@ -81,12 +81,14 @@ export class SearchPage {
   }
 
   addTracking() {
-    // var tracking = new Tracking("Test", 
-    //   new Item({
-    //     "Name":"cola", "sugar": 2.1
-    //   }, 
-    //   new Date()));
-    // this.trackings.add(tracking);
+    var tracking = new Tracking();
+    tracking.setDate(new Date());
+    tracking.setItem(new Item({
+      name: "Cola",
+      volume: "330ml",
+      sugar: 1.2
+    }));
+    this.trackings.add(tracking);
   }
 
   addItem() {

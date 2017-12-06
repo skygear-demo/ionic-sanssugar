@@ -21,6 +21,7 @@ export class ItemCreatePage {
     this.form = formBuilder.group({
       profilePic: [''],
       name: ['', Validators.required],
+      type: ['', Validators.required],
       sugarAmount: [0, Validators.required],
       about: ['']
     });
