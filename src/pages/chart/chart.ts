@@ -47,8 +47,8 @@ export class ChartPage {
   updateSummary() {
     this.todayText = this.getTodayString();
     this.myLimit = this.trackings.getMyLimit();
-    this.trackings.getDateSugarTotal(new Date()).then(sum => {
-      this.todaySum = sum;
+    this.trackings.getDateSugarTotal(new Date()).then(result => {
+      this.todaySum = result.sugar;
       this.todayRemain = Math.round((this.myLimit - this.todaySum) * 100) / 100;
       this.todayRemain = (this.todayRemain > 0)? this.todayRemain : 0;
 
@@ -93,6 +93,11 @@ export class ChartPage {
     });
   }
 
+  howManyCansOfCoke(gram) {
+    // 35g per can of 330ml
+    var noOfCans = Math.round(gram / 35 * 100) /100;
+    return noOfCans;
+  }
   /**
    * Perform a service for the proper items.
    */

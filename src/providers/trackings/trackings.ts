@@ -10,17 +10,54 @@ import { User } from '../user/user';
 export class Trackings {
 
   TrackingPrefix:string = 'TRACKING';
+  FirstTrackingPrefix:string = 'FIRST_TRACKING';
+
+  firstDay:Date;
 
   constructor(private user: User,
-    private storage: Storage) { }
+    private storage: Storage) {
+    this.setFirstDayIfNotSet();
+    this.getFirstDate();
+  }
 
-  query(date: Date) {
+  query(limit?:Number, page?:Number) {
+    if (limit) {
+
+    } else {
+
+    }
+
+
+    return this.getDateSugarTotal(moment());
     // return this.api.get('/trackings', params);
   }
 
   getStorageKey(dateString: string) {
     return this.TrackingPrefix+'-'+this.user.email+'-'+dateString;
+  }
 
+  getFirstDayStorageKey() {
+    return this.FirstTrackingPrefix+'-'+this.user.email;
+  }
+
+  setFirstDayIfNotSet() {
+
+    this.getFirstDate().then(result => {
+      console.log("result of firstDay", result)
+      if(result) {
+        this.storage.set(this.getFirstDayStorageKey(), moment().format('YYYYMMDD'));
+        console.log('first day is set as today');
+      }
+    })
+
+  }
+
+  getFirstDate() {
+    return this.storage.get(this.getFirstDayStorageKey()).then(val => {
+       this.firstDay = val? moment(val,'YYYYMMDD'): moment().startOf('day');
+
+       console.log('first day', this.firstDay);
+    })
   }
 
   add(tracking: Tracking) {
@@ -48,7 +85,7 @@ export class Trackings {
 
     return new Promise(resolve => {
       this.getDateSummary(date).then(records => {
-        
+
         // Loop through items
         var sum:number = 0;
 
@@ -61,9 +98,10 @@ export class Trackings {
           }
         }
 
-        console.log('sum',sum);
-        // Round it because JS Math is "Awesome"
-        resolve(Math.round(sum * 100) / 100);
+        // Round this because JS Math is "Awesome"
+        resolve({
+          date: date,
+          sugar: Math.round(sum * 100) / 100});
       });
     });
   }
@@ -75,9 +113,6 @@ export class Trackings {
     var result = new Promise ( resolve => {
       this.storage.get(storageKey).then(records => {
         records = records? records : [];
-        console.log(records);
-
-
         resolve(records);
       });
     });
@@ -94,7 +129,7 @@ export class Trackings {
   }
 
   clear() {
-    storage.clear();
+    this.storage.clear();
   }
 
 }

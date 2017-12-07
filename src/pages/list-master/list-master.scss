@@ -1,3 +1,54 @@
 page-list-master {
+  .content {
+    background-color: rgb(244, 244, 244);
+  }
+
+  ion-item-group {
+    background-color: transparent;
+  }
+  ion-item-divider {
+    background: transparent;
+  }
+
+  ion-item-sliding.history-item {
+    padding: 10px 10px 0px 10px;
+    background-color: transparent;
+
+    &:last-child {
+      padding: 10px 10px 10px 10px;
+    }
+
+    button.item {
+      margin: 0px;
+      padding:0px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0px 2px 2px #ccc;
+    }
+
+    ion-thumbnail[item-start] {
+      img {
+        width: 100px;
+        height: 100px;
+      }
+      margin: 0px;
+    }
+    
+    .content-container {
+        margin-left: 12px;
+    }
+
+    h2, p {
+      color: #333;
+    }
+
+    h1 {
+      color: #111;
+    }
+
+    &.stage-3 h1 {
+      color: red;
+    }
+  }
 
 }

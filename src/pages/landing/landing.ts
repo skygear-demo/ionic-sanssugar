@@ -39,22 +39,20 @@ export class LandingPage {
 
   checkName() {
     return (this.username != "");
-
   }
 
   checkEmail() {
     return (this.email != "");
-
   }
 
   next() {
     console.log("next");
     if (this.checkName() && this.checkEmail()) {
-      this.user.name = this.username;
-      this.user.email = this.email;
+      this.user.setName(this.username);
+      this.user.setEmail(this.email);
       this.navCtrl.push('InfoPage');
     } else {
-      this.showWarning('Hey, missing informatino.', 'Please enter your name and email to continue.')
+      this.showWarning('Missing information.', 'Please enter your name and email to continue.')
     }
   }
 }

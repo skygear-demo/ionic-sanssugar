@@ -4,7 +4,7 @@
     <ion-title>{{ 'History' | translate }}</ion-title>
 
     <ion-buttons end>
-      <button ion-button icon-only (click)="addItem()">
+      <button ion-button icon-only (click)="addTracking()">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
@@ -14,22 +14,21 @@
 
 <ion-content>
 
-  <ion-list>
-    <ion-item-sliding *ngFor="let item of currentItems">
-      <button ion-item (click)="openItem(item)">
-        <ion-avatar item-start>
-          <img [src]="item.profilePic" />
-        </ion-avatar>
-        <h2>{{item.name}}</h2>
-        <p>{{item.about}}</p>
-        <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
-      </button>
-
-      <ion-item-options>
-        <button ion-button color="danger" (click)="deleteItem(item)">
-          {{ 'DELETE_BUTTON' | translate }}
+  <ion-item-group *ngFor="let group of groupedSummaries">
+  <ion-item-divider light>{{group.month}}</ion-item-divider>
+    <ion-item-sliding *ngFor="let summary of group.summaries" class="history-item stage-{{summary.stage}}">
+        <button ion-item (click)="print(summary)">
+          <ion-thumbnail item-start>
+            <img src="../../assets/img/history-level{{summary.stage}}.png">
+          </ion-thumbnail>
+          <div class="content-container">
+            <h2>{{summary.dateString}}</h2>
+            <p>Sugar taken</p>
+            <h1>{{summary.sugar}} g</h1>
+          </div>
+          <!-- <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note> -->
         </button>
-      </ion-item-options>
+  
     </ion-item-sliding>
-  </ion-list>
+  </ion-item-group>
 </ion-content>

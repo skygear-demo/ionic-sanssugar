@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { Injectable } from '@angular/core';
 
 import { Api } from '../api/api';
-
+import moment from 'moment';
 
 import {
   SkygearService
@@ -48,11 +48,10 @@ export class User {
     this.weight = 50; // default
     this.gender = 'm'; // default
     this.name=''; // default
+    this.email = '';
   }
 
   getCurrentUser () {
-    // TODO
-
     var skygear = this.skygearService.getSkygear();
 
     var skygearPromise = new Promise((resolve, reject) => {
@@ -75,29 +74,34 @@ export class User {
 
   setName(name) {
     this.name = name;
-    this.storage.setItem("name", name);
+    this.storage.set("name", name);
     console.log("User name set:"+name);
   }
 
   setEmail(email) {
     this.email = email;
-    this.storage.setItem("email", email);
+    this.storage.set("email", email);
     console.log("User email set:"+email);
   }
 
   setWeight(weight) {
     this.weight = weight;
-    this.storage.setItem("weight", weight);
+    this.storage.set("weight", weight);
   }
 
   setHeight(height) {
     this.height = height;
-    this.storage.setItem("height", height);
+    this.storage.set("height", height);
   }
 
   setGender(gender) {
-    this.gender=gender;
-    this.storage.setItem("gender", gender);
+    this.gender = gender;
+    this.storage.set("gender", gender);
+  }
+
+  setBirthday(birthday:Date) {
+    this.birthday = birthday;
+    this.storage.set("birthday", moment(birthday).format('DDMMYYYY'));
   }
 
   signupSkygear() {

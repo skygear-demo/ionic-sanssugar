@@ -50,6 +50,11 @@ export class InfoPage {
   next() {
     console.log("next");
 
+    this.user.setGender(this.gender);
+    this.user.setHeight(this.height);
+    this.user.setWeight(this.weight);
+    this.user.setBirthday(this.birthday);
+
     // Register and signup
     this.presentLoadingDefault('Signing you in...');
     this.user.signupSkygear().then((user)=> {
