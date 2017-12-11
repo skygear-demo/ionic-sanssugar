@@ -24,7 +24,7 @@ import {
  *   user: {
  *     // User fields your app needs, like "id", "name", "email", etc.
  *   }
- * }Ø
+ * }
  * ```
  *
  * If the `status` field is not `success`, then an error is detected and returned.
@@ -44,11 +44,14 @@ export class User {
   constructor(public api: Api,
     private skygearService: SkygearService,
     private storage: Storage) { 
+
     this.height = 160; // default
     this.weight = 50; // default
     this.gender = 'm'; // default
     this.name=''; // default
     this.email = '';
+
+    this.loadUserFromStorage();
   }
 
   getCurrentUser () {
@@ -68,8 +71,45 @@ export class User {
       });
 
     });
-
      return skygearPromise;
+  }
+
+  getUserEmail() {
+    return new Promise(resolve => {
+
+      this.storage.get("email").then(email => {
+        this.email = email;
+        resolve(email);
+      });
+    });
+  }
+
+
+  loadUserFromStorage() {
+    this.storage.get("email").then(email => {
+      this.email = email;
+
+      console.log('email = ', email);
+    });
+
+    this.storage.get("name").then(name => {
+      this.name = name;
+      console.log('name = ', name);
+    });
+
+    this.storage.get("gender").then(gender => {
+      this.gender = gender?gender: 'm';
+      console.log('gender = ', gender);
+    });
+
+
+    this.storage.get("height").then(height => {
+      this.height = height;
+    });
+
+    this.storage.get("weight").then(weight => {
+      this.weight = weight;
+    });
   }
 
   setName(name) {
@@ -104,8 +144,35 @@ export class User {
     this.storage.set("birthday", moment(birthday).format('DDMMYYYY'));
   }
 
-  signupSkygear() {
+  updateProfileToSkygear() {
+    var skygear = this.skygearService.getSkygear().then(skygear =>{
+      const modifiedRecord = new skygear.UserRecord({
+        '_id': 'user/' + skygear.auth.currentUser.id,
+        'email': this.email,
+        'name': this.name,
+        'gender': this.gender,
+        'height': this.height,
+        'weight': this.weight
+      });
+      skygear.publicDB.save(modifiedRecord).then((user) => {
+        console.log(user); // updated user record
+      });
+    });
+  }
+
+  getProfile() {
     var skygear = this.skygearService.getSkygear();
+    const query = new skygear.Query(skygear.UserRecord);
+    query.equalTo('_id', skygear.auth.currentUser.id);
+    skygear.publicDB.query(query).then((records) => {
+      const record = records[0];
+      console.log(record);
+    }, (error) => {
+      console.error(error);
+    });
+  }
+
+  signupSkygear() {
     var skygearPromise = new Promise((resolve, reject) => {
       this.skygearService.getSkygear()
         .then((skygear) => {
@@ -114,6 +181,7 @@ export class User {
           skygear.auth.signupAnonymously().then((user)=> {
             console.log(user);
             this.storage.set("userID", user._id);
+            this.updateProfileToSkygear();
             resolve(user);
           });
         })

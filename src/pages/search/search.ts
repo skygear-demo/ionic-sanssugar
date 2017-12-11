@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { Item } from '../../models/item';
 import { Tracking } from '../../models/tracking';
@@ -23,6 +23,7 @@ export class SearchPage {
     public modalCtrl: ModalController,
     public items: Items,
     public trackings: Trackings,
+    private toastCtrl: ToastController,
     private http: HTTP
     ) {
     this.currentItems = this.items.query();
@@ -57,23 +58,34 @@ export class SearchPage {
     });
   }
 
-  addTracking() {
-    var tracking = new Tracking(new Item({
-      name: "Cola",
-      volume: "330ml",
-      sugar: 1.2
-    }), new Date());
-    this.trackings.add(tracking);
-  }
-
   addItem() {
     let addModal = this.modalCtrl.create('ItemCreatePage');
     addModal.onDidDismiss(item => {
+      var tracking = new Tracking(item, new Date());
+      this.trackings.add(tracking);
       if (item) {
         this.items.add(item);
       }
-    })
+
+      this.presentToast(item['name'] + ' is tracked.');
+    });
     addModal.present();
   }
 
+    presentToast(msg) {
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 2000,
+      dismissOnPageChange: true,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
 }
+

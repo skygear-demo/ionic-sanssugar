@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
-import { IonicPage, NavController, ViewController, NavParams, LoadingController,ToastController} from 'ionic-angular';
+import { IonicPage, NavController, ViewController, NavParams, LoadingController, ToastController} from 'ionic-angular';
 
 import { HTTP } from '@ionic-native/http';
 
@@ -24,6 +24,8 @@ export class ItemCreatePage {
   item: any;
   form: FormGroup;
   openfoodfactsAPI:string = 'https://world.openfoodfacts.org/api/v0/product/';
+
+  toast: any;
 
   constructor(public navCtrl: NavController,
     public viewCtrl: ViewController,
@@ -62,7 +64,7 @@ export class ItemCreatePage {
 
   presentToast(msg) {
 
-    let toast = this.toastCtrl.create({
+    this.toast = this.toastCtrl.create({
       message: msg,
       showCloseButton: true,
       closeButtonText: 'OK',
@@ -70,11 +72,11 @@ export class ItemCreatePage {
       position: 'bottom'
     });
 
-    toast.onDidDismiss(() => {
+    this.toast.onDidDismiss(() => {
       console.log('Dismissed toast');
     });
 
-    toast.present();
+    this.toast.present();
   }
 
   presentLoadingDefault(msg) {
@@ -110,7 +112,7 @@ export class ItemCreatePage {
         // Found, but there is no "nutriments" records
         if (dataJSON["product"]["nutriments"]["sugars"]) {
 
-          this.form.patchValue({'sugar': dataJSON["product"]["nutriments"]["sugars"]});
+          this.form.patchValue({'sugar': Number(dataJSON["product"]["nutriments"]["sugars"])});
           this.presentToast(""+ dataJSON["product"]["product_name"]+ " - " +
             "\nSugar per 100g: "+ dataJSON["product"]["nutriments"]["sugars_100g"] + "g"+
             "\nTotal Sugar: "+dataJSON["product"]["nutriments"]["sugars"] + "g");
@@ -124,6 +126,7 @@ export class ItemCreatePage {
         //categories / categories_tags
         // drinks / beverages
 
+        this.form.patchValue({'type': 'snacks'});
 
       } else {
         // Not Found
@@ -175,6 +178,9 @@ export class ItemCreatePage {
    * The user cancelled, so we dismiss without sending data back.
    */
   cancel() {
+    if (this.toast) {
+      this.toast.dismiss();
+    }
     this.viewCtrl.dismiss();
   }
 
@@ -183,6 +189,9 @@ export class ItemCreatePage {
    * back to the presenter.
    */
   done() {
+    if (this.toast) {
+      this.toast.dismiss();
+    }
     if (!this.form.valid) { return; }
     this.viewCtrl.dismiss(this.form.value);
   }

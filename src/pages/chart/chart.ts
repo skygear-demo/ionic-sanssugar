@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
-import { AlertController, LoadingController } from 'ionic-angular';
+import { AlertController, LoadingController, ToastController } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { Storage } from '@ionic/storage';
 
 import { Item } from '../../models/item';
 
@@ -42,7 +43,9 @@ export class ChartPage {
     private alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     private socialSharing: SocialSharing,
-    private barcodeScanner: BarcodeScanner) { }
+    private toastCtrl: ToastController,
+    private barcodeScanner: BarcodeScanner,
+    private storage: Storage) { }
 
   getTodayString() {
     let date = moment().format('D MMM YYYY');
@@ -53,7 +56,8 @@ export class ChartPage {
     this.todayText = this.getTodayString();
     this.myLimit = this.trackings.getMyLimit();
     this.trackings.getDateSugarTotal(new Date()).then(result => {
-
+      var todayChart = document.getElementById('today-chart');
+      todayChart.classList.remove("animate");
       console.log(result);
       this.todaySum = result["sugar"];
       this.todayRemain = Math.round((this.myLimit - this.todaySum) * 100) / 100;
@@ -66,37 +70,39 @@ export class ChartPage {
       percent = percent > 100? 100 : percent;
 
       // animate the chart
-      var todayChart = document.getElementById('today-chart');
-
+      todayChart.classList.add("animate");
+      
       // percent
       var percentageCircle = document.getElementById('percentage-circle');
-      console.log('% ',percent);
+      console.log('percent: ',percent);
 
       // /*Hard coded percentage formula*/
       var c = (300 - 4) * 3.14;
       var cOffSet = (percent/100*0.8) * c;
       percentageCircle.setAttribute("style","stroke-dasharray:"+cOffSet+"px "+c+"px; stroke-dashoffset:"+cOffSet+"px");
 
-      todayChart.className += " animate";
+      todayChart.classList.remove("stage-1", "stage-2", "stage-3");
+      document.getElementById('chart-img').classList.remove("stage-1", "stage-2", "stage-3");
+      document.getElementById('chart-main-content').classList.remove("stage-1", "stage-2", "stage-3");
 
       /* TODO update style when level changes */
       
       if (percent < 50) {
         console.log("stage 1");
-        document.getElementById('chart-main-content').className += " stage-1";
-        document.getElementById('chart-img').className += " stage-1";
+        document.getElementById('chart-main-content').classList.add("stage-1");
+        document.getElementById('chart-img').classList.add("stage-1");
 
-        todayChart.className += " stage-1";
+        todayChart.classList.add("stage-1");
 
       } else if (percent >= 50 && percent < 75) {
-        document.getElementById('chart-main-content').className += " stage-2";
-        document.getElementById('chart-img').className += " stage-2";
-        todayChart.className += " stage-2";
+        document.getElementById('chart-main-content').classList.add("stage-2");
+        document.getElementById('chart-img').classList.add("stage-2");
+        todayChart.classList.add("stage-2");
         console.log("stage 2");
       } else if (percent >= 75) {
-        document.getElementById('chart-main-content').className += " stage-3";
-        document.getElementById('chart-img').className += " stage-3";
-        todayChart.className += " stage-3";
+        document.getElementById('chart-main-content').classList.add("stage-3");
+        document.getElementById('chart-img').classList.add("stage-3");
+        todayChart.classList.add("stage-3");
         console.log("stage 3");
       }
     });
@@ -121,16 +127,6 @@ export class ChartPage {
     });
   }
 
-  /**
-   * Navigate to the detail page for this item.
-   */
-  openItem(item: Item) {
-    this.navCtrl.push('ItemDetailPage', {
-      item: item
-    });
-  }
-
-
   showDisclaimer() {
     let alert = this.alertCtrl.create({
         title: 'Disclaimer',
@@ -146,30 +142,37 @@ export class ChartPage {
     this.user.getCurrentUser().then((user) => {
       console.log(user);
       if (!user) {
+        // No user
         this.navCtrl.push("LandingPage");
       } else {
         this.initChartView();
+        this.user.getUserEmail().then(email=> {
+          console.log("email", email);
+          this.updateSummary();
+        })
       }
     })
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter() {
     // Load doughnut Chart
-    this.updateSummary();
+    this.user.getUserEmail().then(email=> {
+      console.log("email", email);
+      this.updateSummary();
+    })
   }
 
   initChartView() {
     //  Disclaimer
-    var hasShownDisclaimer = localStorage.getItem("hasShownDisclaimer")
-    if(hasShownDisclaimer !== "true") {
-      this.showDisclaimer();
-      localStorage.setItem("hasShownDisclaimer", "true");
-    }
-
+    this.storage.get("hasShownDisclaimer").then(hasShownDisclaimer => {
+      if(hasShownDisclaimer !== "true") {
+        this.storage.set("hasShownDisclaimer", "true");
+        this.showDisclaimer();
+      }
+    })
   }
 
   add() {
-    //this.navCtrl.push('ListMasterPage');
     this.navCtrl.push('SearchPage');
   }
 
@@ -179,27 +182,22 @@ export class ChartPage {
       console.log(barcodeData);
       if (!barcodeData.cancelled) {
         let addModal = this.modalCtrl.create('ItemCreatePage', {barcode: barcodeData});
-        addModal.onDidDismiss(result => {
+        addModal.onDidDismiss(item => {
 
-          console.log(result);
-          var item = new Item({
-            name: result['name'],
-            volume: result['volume'],
-            sugar: result['sugar']
-          });
           var tracking = new Tracking(item, new Date());
+          this.trackings.add(tracking);
+          if (item) {
+            this.items.add(item);
+          }
 
-
-
-          this.trackings.add(tracking)
-          // if (item) {
-          //   this.items.add(item);
-          // }
+          this.presentToast(item['name'] + ' is tracked.');
+          this.updateSummary();
         })
         addModal.present();
       }
     }, (err) => {
     // An error occurred
+      console.error('Error', err);
     });
   }
 
@@ -236,6 +234,22 @@ export class ChartPage {
   }
 
 
+  presentToast(msg) {
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 2000,
+      dismissOnPageChange: true,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
+
   presentLoadingDefault(msg) {
     this.loading = this.loadingCtrl.create({
       content: msg
@@ -250,7 +264,7 @@ export class ChartPage {
     // Register and signup
     this.presentLoadingDefault('Logging out...');
     this.user.logoutSkygear().then((user)=> {
-      this.navCtrl.push('ChartPage');
+      this.navCtrl.push('LandingPage');
       this.loading.dismiss();
     }, (error) => {
       console.log("error");

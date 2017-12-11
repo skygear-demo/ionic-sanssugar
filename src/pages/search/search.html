@@ -6,16 +6,15 @@
 
 <ion-content class="no-padding">
   <ion-searchbar (ionInput)="getItems($event)" placeholder="Search"></ion-searchbar>
-    <button click ion-button full (click)="addTracking()">Testing add tracking</button>
     <button ion-button full (click)="addItem()" class="add-button">
       <ion-icon name="add"></ion-icon> INPUT MANUALLY
     </button>
   
   <ion-list>
     <button ion-item (click)="openItem(item)" *ngFor="let item of currentItems">
-      <ion-avatar item-start>
+      <ion-thumbnail item-start>
         <img [src]="item.profilePic" />
-      </ion-avatar>
+      </ion-thumbnail>
       <h2>{{item.name}}</h2>
       <p>{{item.about}}</p>
       <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
