@@ -26,9 +26,7 @@ export class Trackings {
     } else {
 
     }
-
-
-    return this.getDateSugarTotal(moment());
+    return this.getDateSugarTotal(moment().toDate());
     // return this.api.get('/trackings', params);
   }
 
@@ -54,7 +52,7 @@ export class Trackings {
 
   getFirstDate() {
     return this.storage.get(this.getFirstDayStorageKey()).then(val => {
-       this.firstDay = val? moment(val,'YYYYMMDD'): moment().startOf('day');
+       this.firstDay = val? moment(val,'YYYYMMDD').toDate(): moment().startOf('day').toDate();
 
        console.log('first day', this.firstDay);
     })

@@ -20,6 +20,7 @@
     "@angular/http": "4.4.4",
     "@angular/platform-browser": "4.4.4",
     "@angular/platform-browser-dynamic": "4.4.4",
+    "@ionic-native/barcode-scanner": "^4.4.2",
     "@ionic-native/camera": "4.3.3",
     "@ionic-native/core": "4.3.3",
     "@ionic-native/http": "^4.4.2",
@@ -31,7 +32,7 @@
     "@ngx-translate/core": "8.0.0",
     "@ngx-translate/http-loader": "^2.0.0",
     "cordova-browser": "5.0.1",
-    "cordova-ios": "^4.5.3",
+    "cordova-ios": "^4.5.4",
     "cordova-plugin-advanced-http": "^1.9.0",
     "cordova-plugin-device": "^1.1.4",
     "cordova-plugin-file": "^5.0.0",
@@ -46,6 +47,7 @@
     "ionic-plugin-keyboard": "^2.2.1",
     "ionicons": "3.0.0",
     "moment": "^2.19.3",
+    "phonegap-plugin-barcodescanner": "^7.0.0",
     "rxjs": "5.4.3",
     "skygear": "^1.1.0-alpha.2",
     "sw-toolbox": "3.6.0",
@@ -67,11 +69,13 @@
       "cordova-sqlite-storage": {},
       "cordova-plugin-advanced-http": {},
       "cordova-plugin-statusbar": {},
-      "cordova-plugin-decimal-keyboard": {}
+      "phonegap-plugin-barcodescanner": {
+        "CAMERA_USAGE_DESCRIPTION": " "
+      }
     },
     "platforms": [
-      "ios",
-      "browser"
+      "browser",
+      "ios"
     ]
   }
 }

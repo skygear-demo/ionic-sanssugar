@@ -4,7 +4,7 @@ export class Tracking {
 
     constructor(
      public item: Item,
-     public date:Date){
+     public date: Date){
     }
 
     setItem(item) {

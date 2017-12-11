@@ -2,15 +2,13 @@ import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController } from 'ionic-angular';
 
 import { Item } from '../../models/item';
-import { Items, Trackings } from '../../providers/providers';
+import { Items, Trackings, User } from '../../providers/providers';
 
 import { Tracking } from '../../models/tracking';
 import { Summary } from '../../models/summary';
 import { Storage } from '@ionic/storage';
 
 import moment from 'moment';
-
-import { User } from '../models/user/user';
 
 @IonicPage()
 @Component({
@@ -48,8 +46,8 @@ export class ListMasterPage {
 
       this.groupedSummaries = [];
       sortedSummaries.forEach((value, index) => {
-          if(value.date.format('MMMM') != currentMonth) {
-              currentMonth = value.date.format('MMMM');
+          if(moment(value.date).format('MMMM') != currentMonth) {
+              currentMonth = moment(value.date).format('MMMM');
               let newGroup = {
                   month: currentMonth,
                   summaries: []
@@ -75,7 +73,7 @@ export class ListMasterPage {
       console.log('daysDiff', daysDiff);
 
       for (var i = 0; i <= daysDiff; i++) {
-        var dayToQuery = moment().subtract(i,'day')
+        var dayToQuery = moment().subtract(i,'day').toDate();
         console.log(dayToQuery);
         getSummaryQueries.push(this.trackings.getDateSugarTotal(dayToQuery));
       }
@@ -83,12 +81,12 @@ export class ListMasterPage {
       Promise.all(getSummaryQueries).then(values => {
         this.daySummaries = []; // clear the original list
         var limit = this.trackings.getMyLimit();
-        for (i in values) {
+        for (var i in values) {
           // console.log(values[i]);
-          values[i].dateString = values[i].date.format('D MMM YYYY');
+          values[i].dateString = moment(values[i].date).format('D MMM YYYY');
 
           // set stage. TODO: Please move to a better place.
-          values[i].stage = values[i].date.format('D MMM YYYY');
+          values[i].stage = 1;
           var percent = values[i].sugar/limit * 100;
           console.log('percent', percent);
           if (percent < 50) {

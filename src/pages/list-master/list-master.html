@@ -19,7 +19,7 @@
     <ion-item-sliding *ngFor="let summary of group.summaries" class="history-item stage-{{summary.stage}}">
         <button ion-item (click)="print(summary)">
           <ion-thumbnail item-start>
-            <img src="../../assets/img/history-level{{summary.stage}}.png">
+            <img src="assets/img/history-level{{summary.stage}}.png">
           </ion-thumbnail>
           <div class="content-container">
             <h2>{{summary.dateString}}</h2>

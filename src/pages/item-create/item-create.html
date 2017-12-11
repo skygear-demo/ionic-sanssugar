@@ -7,7 +7,7 @@
         <span color="primary" showWhen="ios">
           {{ 'CANCEL_BUTTON' | translate }}
         </span>
-        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+        <ion-icon name="md-close" showWhen="android,windows,core"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons end>
@@ -21,7 +21,6 @@
   </ion-navbar>
 
 </ion-header>
-
 
 <ion-content>
   <form *ngIf="form" [formGroup]="form" (ngSubmit)="createItem()">

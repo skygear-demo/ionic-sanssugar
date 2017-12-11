@@ -62,23 +62,64 @@ page-chart h5 {
     h3.title {
       color: #fff;
       font-weight: 300;
+       font-size: 2.0rem;
     }
 
-  button.add-intake{
+  button.add-intake {
     background: none;
+    cursor: pointer;
     img {
       height:57px;
       width:57px;
     }
+
+    &:hover {
+      opacity: 0.7;
+    };
   }
 
-  .gram {
-    font-weight: 600;
-    font-size: 3em;
+  .summary {
+    margin-top: -60px;
+    text-align: center;
+
+    .gram {
+      i.icon.sugar {
+        display: inline-block;
+        height: 0.8em;
+        width: 0.8em;
+        margin-right: 4px;
+        background-image: url('../assets/img/home-sugar.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+      font-weight: 600;
+      font-size: 2.8em;
+    }
+    .gram-unit {
+      font-weight: 400;
+      font-size: 2.2em;
+    }
   }
-  .gram-unit {
-    font-weight: 400;
-    font-size: 2.2em;
+
+  i.icon.drinks {
+    display: inline-block;
+    position: relative;
+    top: 0.8em;
+    height: 2.4em;
+    width: 2.4em;
+    margin-right: 2px;
+    background-image: url('../assets/img/home-drink.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  .coke-count {
+    line-height: 2.4em;
+  }
+
+  .today-intake {
+    color: rgba(255,255,255, 0.8);
+    font-weight: 300;
   }
 
   div.level-image {
@@ -87,23 +128,23 @@ page-chart h5 {
     height: 320px;
     margin: auto;
     margin-top: -300px;
-    min-width: 375px;
+    max-width: 100%;
     transform: translatey(0px);
     animation: float 8s ease-in-out infinite;
     background-size: contain;
-    background-image: url('../../assets/img/surgar-graphic-level1.png');
+    background-image: url('../assets/img/surgar-graphic-level1.png');
     background-repeat: no-repeat;
 
     &.stage-1 {
-      background-image: url('../../assets/img/surgar-graphic-level1.png');
+      background-image: url('../assets/img/surgar-graphic-level1.png');
     }
 
     &.stage-2 {
-      background-image: url('../../assets/img/surgar-graphic-level2.png');
+      background-image: url('../assets/img/surgar-graphic-level2.png');
     }
 
     &.stage-3{
-      background-image: url('../../assets/img/surgar-graphic-level3.png');
+      background-image: url('../assets/img/surgar-graphic-level3.png');
     }
   }
 

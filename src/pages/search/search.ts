@@ -28,32 +28,9 @@ export class SearchPage {
     this.currentItems = this.items.query();
   }
 
-
   ionViewDidLoad() {
-    this.searchFromAPI();
-
     console.log(Enums.FoodType);
-
   }
-
-  /** Search from API **/
-
-  searchFromAPI() {
-    this.http.get('https://world.openfoodfacts.org/api/v0/product/737628064502.json', {}, {})
-    .then(data => {
-
-      console.log(data.status);
-      console.log(data.data); // data received by server
-      console.log(data.headers);
-
-    }).catch(error => {
-      console.log(error)
-      console.log(error.status);
-      console.log(error.error); // error message as string
-      console.log(error.headers);
-      });
-  }
-
 
   /**
    * Perform a service for the proper items.
@@ -81,13 +58,11 @@ export class SearchPage {
   }
 
   addTracking() {
-    var tracking = new Tracking();
-    tracking.setDate(new Date());
-    tracking.setItem(new Item({
+    var tracking = new Tracking(new Item({
       name: "Cola",
       volume: "330ml",
       sugar: 1.2
-    }));
+    }), new Date());
     this.trackings.add(tracking);
   }
 

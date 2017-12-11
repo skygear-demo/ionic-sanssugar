@@ -33,9 +33,7 @@ export class InfoPage {
     this.loading = this.loadingCtrl.create({
       content: msg
     });
-
     this.loading.present();
-
   }
 
   updateGender(gender) {

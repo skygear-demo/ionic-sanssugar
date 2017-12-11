@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 import { AlertController, LoadingController } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
@@ -12,6 +12,8 @@ import { Config } from '../../app/config'
 
 import { MainPage } from '../pages';
 import moment from 'moment';
+
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 
 @IonicPage()
@@ -26,6 +28,7 @@ export class ChartPage {
   currentItems: any = [];
   todaySum: number;
   todayRemain: number;
+  cokeCount: number;
   myLimit: number;
   todayText: string;
   loading: any;
@@ -35,9 +38,11 @@ export class ChartPage {
     public items: Items,
     public trackings: Trackings,
     public user: User,
+    public modalCtrl: ModalController,
     private alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
-    private socialSharing: SocialSharing) { }
+    private socialSharing: SocialSharing,
+    private barcodeScanner: BarcodeScanner) { }
 
   getTodayString() {
     let date = moment().format('D MMM YYYY');
@@ -48,9 +53,13 @@ export class ChartPage {
     this.todayText = this.getTodayString();
     this.myLimit = this.trackings.getMyLimit();
     this.trackings.getDateSugarTotal(new Date()).then(result => {
-      this.todaySum = result.sugar;
+
+      console.log(result);
+      this.todaySum = result["sugar"];
       this.todayRemain = Math.round((this.myLimit - this.todaySum) * 100) / 100;
       this.todayRemain = (this.todayRemain > 0)? this.todayRemain : 0;
+
+      this.cokeCount = this.howManyCansOfCoke(this.todayRemain);
 
       console.log('todaySum', this.todaySum);
       var percent = (this.todaySum / this.myLimit)* 100;
@@ -61,7 +70,7 @@ export class ChartPage {
 
       // percent
       var percentageCircle = document.getElementById('percentage-circle');
-      console.log(percent);
+      console.log('% ',percent);
 
       // /*Hard coded percentage formula*/
       var c = (300 - 4) * 3.14;
@@ -133,10 +142,10 @@ export class ChartPage {
 
   ionViewDidLoad() {
     // Check User Logged in
+    this.navCtrl.swipeBackEnabled=false;
     this.user.getCurrentUser().then((user) => {
       console.log(user);
       if (!user) {
-        this.navCtrl.swipeBackEnabled=false;
         this.navCtrl.push("LandingPage");
       } else {
         this.initChartView();
@@ -164,17 +173,35 @@ export class ChartPage {
     this.navCtrl.push('SearchPage');
   }
 
+  addByBarcode() {
+    this.barcodeScanner.scan({disableSuccessBeep: true}).then((barcodeData) => {
+ // Success! Barcode data is here
+    console.log(barcodeData);
+
+    let addModal = this.modalCtrl.create('ItemCreatePage', {barcode: barcodeData});
+    addModal.onDidDismiss(item => {
+      if (item) {
+        this.items.add(item);
+      }
+    })
+    addModal.present();
+
+    }, (err) => {
+    // An error occurred
+    });
+  }
+
   showHistory() {
     this.navCtrl.push('ListMasterPage');
   }
 
   share() {
     // Check if sharing via email is supported
-    this.socialSharing.canShareViaEmail().then(() => {
-      // Sharing via email is possible
-    }).catch(() => {
-      // Sharing via email is not possible
-    });
+    // this.socialSharing.canShareViaEmail().then(() => {
+    //   // Sharing via email is possible
+    // }).catch(() => {
+    //   // Sharing via email is not possible
+    // });
 
     // Share via email
     this.socialSharing.shareViaEmail('Body', 'Subject', ['recipient@example.org']).then(() => {

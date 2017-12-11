@@ -32,18 +32,26 @@
     </ion-col>
   </ion-row>
   <ion-row>
-    <ion-col col-6 offset-3>
-    <p><span class="gram">{{this.todayRemain}} </span><span class="gram-unit">g</span> <br>out of {{this.myLimit}}g per day</p></ion-col>
+    <ion-col col-8 offset-2>
+      <p class="summary">
+        <span class="gram"><i class="icon sugar"></i>{{this.todayRemain}} </span>
+        <span class="gram-unit">g</span> <br>out of {{this.myLimit}}g per day
+        <br>
+        ⬇
+        <br>
+        <i class="icon drinks"></i><span class="coke-count"> {{this.cokeCount}} cans of 330ml Cola</span>
+      </p>
+    </ion-col>
   </ion-row>
 
   <ion-row>
-    <ion-col col-12><h3 class="today">Today's intake</h3></ion-col>
+    <ion-col col-12><h3 class="today-intake">Today's intake</h3></ion-col>
   </ion-row>
 
   <ion-row>
     <ion-col col-4><button ion-button color="light" clear round (click)="logout()">Logout</button></ion-col> 
     <ion-col col-4><button class="add-intake" clear (click)="add()"><img src="assets/img/add-intake.png"></button></ion-col> <!--TODO: slides up-->
-    <ion-col col-4><button ion-button color="light" clear round >Barcode</button></ion-col>
+    <ion-col col-4><button ion-button color="light" clear round (click)="addByBarcode()">Barcode</button></ion-col>
   </ion-row>
 </ion-grid>
 

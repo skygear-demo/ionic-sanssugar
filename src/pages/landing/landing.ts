@@ -24,9 +24,8 @@ export class LandingPage {
     }
 
   ionViewDidLoad() {
-    this.navCtrl.swipeBackEnabled=false;
+    this.navCtrl.swipeBackEnabled = false;
   }
-
 
   showWarning(title, msg) {
     let alert = this.alertCtrl.create({

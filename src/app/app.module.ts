@@ -20,6 +20,7 @@ import { MyApp } from './app.component';
 import { SkygearService } from './skygear.service';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { HTTP } from '@ionic-native/http';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -57,7 +58,10 @@ export function provideSettings(storage: Storage) {
       }
     }),
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot({
+     name: '__mydb',
+     driverOrder: ['sqlite', 'indexeddb', 'websql']
+   })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -77,7 +81,8 @@ export function provideSettings(storage: Storage) {
      SkygearService,
      SocialSharing,
      SQLite,
-     HTTP
+     HTTP,
+     BarcodeScanner
   ]
 })
 export class AppModule { }
