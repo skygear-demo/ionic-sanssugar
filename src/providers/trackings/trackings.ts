@@ -16,8 +16,10 @@ export class Trackings {
 
   constructor(private user: User,
     private storage: Storage) {
-    this.setFirstDayIfNotSet();
-    this.getFirstDate();
+    this.user.getUserEmail().then(email => {
+      this.setFirstDayIfNotSet();
+    });
+
   }
 
   query(limit?:Number, page?:Number) {
@@ -39,23 +41,28 @@ export class Trackings {
   }
 
   setFirstDayIfNotSet() {
-
     this.getFirstDate().then(result => {
       console.log("result of firstDay", result)
-      if(result) {
-        this.storage.set(this.getFirstDayStorageKey(), moment().format('YYYYMMDD'));
-        console.log('first day is set as today');
+      if(!result) {
+        let todayString = moment().format('YYYYMMDD');
+        this.storage.set(this.getFirstDayStorageKey(), todayString);
+        console.log('first day is set as today: ',todayString);
       }
-    })
 
+      // TODO: If the current date is < firstdate, save it instead
+    })
   }
 
   getFirstDate() {
-    return this.storage.get(this.getFirstDayStorageKey()).then(val => {
-       this.firstDay = val? moment(val,'YYYYMMDD').toDate(): moment().startOf('day').toDate();
+    return new Promise(resolve => {
+      this.storage.get(this.getFirstDayStorageKey()).then(val => {
+        this.firstDay = val? moment(val,'YYYYMMDD').toDate(): moment().startOf('day').toDate();
 
-       console.log('first day', this.firstDay);
-    })
+        console.log("result val", val)
+        console.log('first day', this.firstDay);
+        resolve(val);
+      })
+    });
   }
 
   add(tracking: Tracking) {
