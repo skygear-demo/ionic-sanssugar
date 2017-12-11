@@ -69,6 +69,8 @@ export class Trackings {
       console.log('records', records);
       records.push(tracking);
 
+      console.log('records ', records);
+
       this.storage.set(storageKey, records);
     });
   }
@@ -80,7 +82,6 @@ export class Trackings {
   }
 
   getDateSugarTotal(date:Date) {
-
     return new Promise(resolve => {
       this.getDateSummary(date).then(records => {
 
@@ -90,9 +91,9 @@ export class Trackings {
         for (const i in records) {
           console.log(i);
           let record = records[i];
-          console.log(record);
+          console.log(record.item);
           if (record.item.hasOwnProperty('sugar')) {
-            sum += record.item['sugar'];
+            sum += Number(record.item['sugar']);
           }
         }
 
