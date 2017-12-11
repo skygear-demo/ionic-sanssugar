@@ -84,6 +84,15 @@ export class User {
     });
   }
 
+  getUserGender() {
+    return new Promise(resolve => {
+      this.storage.get("gender").then(gender => {
+        this.gender = gender;
+        resolve(gender);
+      });
+    });
+  }
+
 
   loadUserFromStorage() {
     this.storage.get("email").then(email => {
