@@ -35,6 +35,7 @@ export class ListMasterPage {
   ionViewDidLoad() {
     // load from database
     this.loadSummary();
+    this.navCtrl.swipeBackEnabled=true;
   }
 
   /**

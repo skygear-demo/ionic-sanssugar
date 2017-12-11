@@ -62,8 +62,14 @@ page-chart h5 {
     h3.title {
       color: #fff;
       font-weight: 300;
-       font-size: 2.0rem;
+      font-size: 1.8rem;
+      margin-top: 1.0rem;
+      margin-bottom: 1.0rem;
     }
+
+  .today-date {
+    font-weight: 600;
+  }
 
   button.add-intake {
     background: none;
@@ -79,7 +85,7 @@ page-chart h5 {
   }
 
   .summary {
-    margin-top: -60px;
+    margin-top: -68px;
     text-align: center;
 
     .gram {
@@ -115,6 +121,16 @@ page-chart h5 {
 
   .coke-count {
     line-height: 2.4em;
+  }
+
+  i.icon.equal {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    margin-top: 16px;
+    background-image: url('../assets/img/equal.png');
+    background-size: contain;
+    background-repeat: no-repeat;
   }
 
   .today-intake {

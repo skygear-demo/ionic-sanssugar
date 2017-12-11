@@ -91,7 +91,6 @@ export class ChartPage {
         console.log("stage 1");
         document.getElementById('chart-main-content').classList.add("stage-1");
         document.getElementById('chart-img').classList.add("stage-1");
-
         todayChart.classList.add("stage-1");
 
       } else if (percent >= 50 && percent < 75) {
@@ -113,19 +112,6 @@ export class ChartPage {
     var noOfCans = Math.round(gram / 35 * 100) /100;
     return noOfCans;
   }
-  /**
-   * Perform a service for the proper items.
-   */
-  getItems(ev) {
-    let val = ev.target.value;
-    if (!val || !val.trim()) {
-      this.currentItems = [];
-      return;
-    }
-    this.currentItems = this.items.query({
-      name: val
-    });
-  }
 
   showDisclaimer() {
     let alert = this.alertCtrl.create({
@@ -143,12 +129,16 @@ export class ChartPage {
       console.log(user);
       if (!user) {
         // No user
-        this.navCtrl.push("LandingPage");
+        this.navCtrl.setRoot('LandingPage');
+        this.navCtrl.popToRoot();
       } else {
-        this.initChartView();
         this.user.getUserEmail().then(email=> {
           console.log("email", email);
-          this.updateSummary();
+
+          this.user.getUserGender().then(gender => {
+            this.initChartView();
+            this.updateSummary();
+          })
         })
       }
     })
@@ -249,7 +239,6 @@ export class ChartPage {
     toast.present();
   }
 
-
   presentLoadingDefault(msg) {
     this.loading = this.loadingCtrl.create({
       content: msg
@@ -264,8 +253,9 @@ export class ChartPage {
     // Register and signup
     this.presentLoadingDefault('Logging out...');
     this.user.logoutSkygear().then((user)=> {
-      this.navCtrl.push('LandingPage');
       this.loading.dismiss();
+      this.navCtrl.setRoot('LandingPage');
+      this.navCtrl.popToRoot();
     }, (error) => {
       console.log("error");
     });

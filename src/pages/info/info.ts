@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { Item } from '../../models/item';
 import { Items, User } from '../../providers/providers';
@@ -21,6 +21,7 @@ export class InfoPage {
   constructor(public navCtrl: NavController,
     public loadingCtrl: LoadingController,
     public navParams: NavParams,
+    private alertCtrl: AlertController,
     public items: Items,
     public user: User) {
     this.gender = this.user.gender;
@@ -43,6 +44,15 @@ export class InfoPage {
 
   ionViewDidLoad() {
     this.navCtrl.swipeBackEnabled=true;
+  }
+
+  showWarning(title, msg) {
+    let alert = this.alertCtrl.create({
+        title: title,
+        subTitle: msg,
+        buttons: ['OK']
+      });
+      alert.present();
   }
 
   next() {
