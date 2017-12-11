@@ -39,12 +39,19 @@
         <ion-input type="text" placeholder="Food Name" formControlName="name"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input type="number" placeholder="1.0 g" formControlName="sugarAmount" min="0"></ion-input>
-      </ion-item>
-
+        <ion-input type="number" placeholder="Sugar Ammount (in gram)" pattern="[0-9]*" formControlName="sugar" min="0"></ion-input>
+      </ion-item> 
       <ion-item>
-        <ion-input type="text" placeholder="Food Type" formControlName="type"></ion-input>
+        <ion-label>Food Type</ion-label>
+        <ion-select interface="popover" formControlName="type">
+          <ion-option value="drinks">Drinks</ion-option>
+          <ion-option value="snacks">Snacks</ion-option>
+          <ion-option value="meal">Meal</ion-option>
+          <ion-option value="others">Others</ion-option>
+        </ion-select>
       </ion-item>
     </ion-list>
   </form>
 </ion-content>
+
+

@@ -61,7 +61,7 @@ export class Trackings {
   add(tracking: Tracking) {
     var date = tracking.date;
     console.log(tracking);
-    var dateString = moment().format('YYYYMMDD');
+    var dateString = moment(date).format('YYYYMMDD');
     console.log(dateString);
     let storageKey = this.getStorageKey(dateString);
     this.storage.get(storageKey).then((records) => {

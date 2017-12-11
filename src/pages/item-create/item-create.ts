@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
-import { IonicPage, NavController, ViewController, NavParams} from 'ionic-angular';
+import { IonicPage, NavController, ViewController, NavParams, LoadingController,ToastController} from 'ionic-angular';
 
 import { HTTP } from '@ionic-native/http';
 
@@ -19,35 +19,31 @@ export class ItemCreatePage {
 
   isReadyToSave: boolean;
   barcodeData: any;
+  loading: any;
 
   item: any;
-
   form: FormGroup;
+  openfoodfactsAPI:string = 'https://world.openfoodfacts.org/api/v0/product/';
 
   constructor(public navCtrl: NavController,
     public viewCtrl: ViewController,
     formBuilder: FormBuilder,
     public camera: Camera,
     params: NavParams,
+    public loadingCtrl: LoadingController,
+    private toastCtrl: ToastController,
     private http: HTTP) {
 
     this.barcodeData = params.get('barcode')
 
     console.log('Barcode', params.get('barcode'));
 
-    if(this.barcodeData) {
-      // prefill the form for that bar code
-      this.searchFromAPI(this.barcodeData['text']);
-
-    }
-
-
     this.form = formBuilder.group({
       profilePic: [''],
       name: ['', Validators.required],
       type: ['', Validators.required],
-      sugarAmount: [0, Validators.required],
-      about: ['']
+      volume: [''],
+      sugar: [null, Validators.required]
     });
 
     // Watch the form for changes, and
@@ -58,14 +54,45 @@ export class ItemCreatePage {
 
   ionViewDidLoad() {
 
+    if(this.barcodeData) {
+      // prefill the form for that bar code
+      this.searchFromAPI(this.barcodeData['text']);
+    }
   }
+
+  presentToast(msg) {
+
+    let toast = this.toastCtrl.create({
+      message: msg,
+      showCloseButton: true,
+      closeButtonText: 'OK',
+      dismissOnPageChange: true,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
+  presentLoadingDefault(msg) {
+    this.loading = this.loadingCtrl.create({
+      content: msg
+    });
+
+    this.loading.present();
+  }
+
 
   /** Search from API **/
 
   searchFromAPI(id) {
-    this.http.get('https://world.openfoodfacts.org/api/v0/product/'+id+'.json', {}, {})
+    this.presentLoadingDefault('Searching from database...');
+    this.http.get(this.openfoodfactsAPI + id + '.json', {}, {})
     .then(data => {
-
+      this.loading.dismiss();
       // console.log(data.status);
       console.log("data", data.data); // data received by server
       // console.log(data.headers);
@@ -77,16 +104,31 @@ export class ItemCreatePage {
       if(dataJSON["status"] === 1) {
         //found
 
-        this.form.patchValue({'name': dataJSON["product"]["product_name_en"]});
-        this.form.patchValue({'sugarAmount': dataJSON["product"]["nutriments"]["sugars_serving"]});
+        this.form.patchValue({'name': dataJSON["product"]["product_name"]});
 
-        this.form.patchValue({'profilePic': dataJSON["product"]["image_front_small_url"]});
-        //image_front_small_url
         console.log("Found");
-        alert("Found: "+ dataJSON["product"]["product_name_en"])
+        // Found, but there is no "nutriments" records
+        if (dataJSON["product"]["nutriments"]["sugars"]) {
+
+          this.form.patchValue({'sugar': dataJSON["product"]["nutriments"]["sugars"]});
+          this.presentToast(""+ dataJSON["product"]["product_name"]+ " - " +
+            "\nSugar per 100g: "+ dataJSON["product"]["nutriments"]["sugars_100g"] + "g"+
+            "\nTotal Sugar: "+dataJSON["product"]["nutriments"]["sugars"] + "g");
+
+        } else {
+          this.presentToast("Product ("+dataJSON["product"]["product_name"]+'\n) found, however there is no sugar information available. Please input sugar amount mannually.');
+        }
+        
+        this.form.patchValue({'profilePic': dataJSON["product"]["image_front_small_url"]});
+
+        //categories / categories_tags
+        // drinks / beverages
+
+
       } else {
         // Not Found
-        alert("Sorry, this product is not found on the database. But you can input the info manually to track this item.")
+
+        this.presentToast("Sorry, this product is not found on the database. But you can input the info manually to track this item.");
       }
 
     }).catch(error => {

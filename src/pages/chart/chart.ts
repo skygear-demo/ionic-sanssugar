@@ -176,16 +176,28 @@ export class ChartPage {
   addByBarcode() {
     this.barcodeScanner.scan({disableSuccessBeep: true}).then((barcodeData) => {
  // Success! Barcode data is here
-    console.log(barcodeData);
+      console.log(barcodeData);
+      if (!barcodeData.cancelled) {
+        let addModal = this.modalCtrl.create('ItemCreatePage', {barcode: barcodeData});
+        addModal.onDidDismiss(result => {
 
-    let addModal = this.modalCtrl.create('ItemCreatePage', {barcode: barcodeData});
-    addModal.onDidDismiss(item => {
-      if (item) {
-        this.items.add(item);
+          console.log(result);
+          var item = new Item({
+            name: result['name'],
+            volume: result['volume'],
+            sugar: result['sugar']
+          });
+          var tracking = new Tracking(item, new Date());
+
+
+
+          this.trackings.add(tracking)
+          // if (item) {
+          //   this.items.add(item);
+          // }
+        })
+        addModal.present();
       }
-    })
-    addModal.present();
-
     }, (err) => {
     // An error occurred
     });
@@ -204,11 +216,11 @@ export class ChartPage {
     // });
 
     // Share via email
-    this.socialSharing.shareViaEmail('Body', 'Subject', ['recipient@example.org']).then(() => {
-      // Success!
-    }).catch(() => {
-      // Error!
-    });
+    // this.socialSharing.shareViaEmail('Body', 'Subject', ['recipient@example.org']).then(() => {
+    //   // Success!
+    // }).catch(() => {
+    //   // Error!
+    // });
 
     this.socialSharing.shareViaFacebook('Hey','img.png','url').then(() => {
       // Success!
@@ -216,7 +228,7 @@ export class ChartPage {
       // Error!
     });
 
-    this.socialSharing.share('message', 'subject', 'file', 'url').then(() => {
+    this.socialSharing.share('I am using Sans Sugar to track my sugar intake.', 'Let\'s eat less sugar.', 'file', 'url').then(() => {
       // Success!
     }).catch(() => {
       // Error!
