@@ -19,7 +19,6 @@ export class Trackings {
     this.user.getUserEmail().then(email => {
       this.setFirstDayIfNotSet();
     });
-
   }
 
   query(limit?:Number, page?:Number) {
@@ -43,13 +42,14 @@ export class Trackings {
   setFirstDayIfNotSet() {
     this.getFirstDate().then(result => {
       console.log("result of firstDay", result)
-      if(!result) {
+
+      // If the current date is not set or < firstdate, save it instead
+      var firstDayIsAfterToday = moment(result, 'YYYYMMDD').isAfter(moment().toDate());
+      if(!result || firstDayIsAfterToday) {
         let todayString = moment().format('YYYYMMDD');
         this.storage.set(this.getFirstDayStorageKey(), todayString);
         console.log('first day is set as today: ',todayString);
       }
-
-      // TODO: If the current date is < firstdate, save it instead
     })
   }
 
