@@ -15,6 +15,7 @@ import { MainPage } from '../pages';
 import moment from 'moment';
 
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { ThreeDeeTouch, ThreeDeeTouchQuickAction, ThreeDeeTouchForceTouch } from '@ionic-native/three-dee-touch';
 
 
 @IonicPage()
@@ -45,7 +46,9 @@ export class ChartPage {
     private socialSharing: SocialSharing,
     private toastCtrl: ToastController,
     private barcodeScanner: BarcodeScanner,
-    private storage: Storage) { }
+    private storage: Storage,
+    private threeDeeTouch: ThreeDeeTouch) { 
+    }
 
   getTodayString() {
     let date = moment().format('D MMM YYYY');
@@ -122,7 +125,13 @@ export class ChartPage {
       alert.present();
   }
 
+  add3DTouchHandler() {
+    
+  }
+
   ionViewDidLoad() {
+
+    this.add3DTouchHandler();
     // Check User Logged in
     this.navCtrl.swipeBackEnabled=false;
     this.user.getCurrentUser().then((user) => {

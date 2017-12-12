@@ -21,6 +21,7 @@ import { SkygearService } from './skygear.service';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { HTTP } from '@ionic-native/http';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { ThreeDeeTouch} from '@ionic-native/three-dee-touch';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -82,7 +83,8 @@ export function provideSettings(storage: Storage) {
      SocialSharing,
      SQLite,
      HTTP,
-     BarcodeScanner
+     BarcodeScanner,
+     ThreeDeeTouch
   ]
 })
 export class AppModule { }
