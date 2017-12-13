@@ -70,6 +70,8 @@ export class InfoPage {
       this.loading.dismiss();
     }, (error) => {
       console.log("error");
+      this.loading.dismiss();
+      this.showWarning('Sorry.','Please connect to the Internet and try again.')
     });
   }
 

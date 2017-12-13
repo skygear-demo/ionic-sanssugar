@@ -192,6 +192,11 @@ export class User {
             this.storage.set("userID", user._id);
             this.updateProfileToSkygear();
             resolve(user);
+          }).catch(error => {
+            console.log(`Skygear Signup Error`);
+            console.error(error);
+            reject(error);
+
           });
         })
         .catch((error) => {

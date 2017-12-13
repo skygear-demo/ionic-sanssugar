@@ -8,53 +8,45 @@ export class Items {
   items: Item[] = [];
   food: Item[] = [];
 
-  defaultItem: any = {
-    "name": "Burt Bear",
-    "profilePic": "assets/img/speakers/bear.jpg",
-    "about": "Burt is a Bear.",
-  };
+  defaultItem: any = {};
 
 
   constructor(private sqlite: SQLite) {
-    let items = [
+    // These are default Items
+    let defaultItems = [
       {
-        "name": "Coke",
+        "name": "Coke 355ml",
         "profilePic": "http://icons.iconarchive.com/icons/michael/coke-pepsi/512/Coca-Cola-Can-icon.png",
-        "about": ""
+        "about": "",
+        "sugar": "62"
       },
       {
-        "name": "Fanta",
+        "name": "Fanta 355ml",
         "profilePic": "",
-        "about": ""
+        "about": "",
+        "sugar": "44"
       },
       {
         "name": "Sprite",
         "profilePic": "",
-        "about": ""
+        "about": "",
+        "sugar": "25"
       },
       {
-        "name": "Dew",
+        "name": "Mountain Dew",
         "profilePic": "",
-        "about": ""
+        "about": "",
+        "sugar": "46"
       },
       {
-        "name": "Syrup",
+        "name": "Oreo (1 pack)",
         "profilePic": "",
-        "about": ""
-      },
-      {
-        "name": "Tea",
-        "profilePic": "",
-        "about": ""
-      },
-      {
-        "name": "Chocolate Bar",
-        "profilePic": "",
-        "about": ""
+        "about": "",
+        "sugar": "23"
       }
     ];
 
-    for (let item of items) {
+    for (let item of defaultItems) {
       this.items.push(new Item(item));
     }
   }

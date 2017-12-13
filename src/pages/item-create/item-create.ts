@@ -139,6 +139,11 @@ export class ItemCreatePage {
       console.log(error.status);
       console.log(error.error); // error message as string
       console.log(error.headers);
+
+      this.loading.dismiss();
+      alert(error.error);
+
+      this.presentToast("However, you can input the info manually to track.");
       });
   }
 
