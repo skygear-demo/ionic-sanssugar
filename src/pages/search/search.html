@@ -16,13 +16,20 @@
     </button>
   
   <ion-list class="item-list">
-    <button ion-item (click)="openItem(item)" *ngFor="let item of currentItems">
+  <ion-item-sliding *ngFor="let item of currentItems">
+    <ion-item (click)="openItem(item)">
+    
       <ion-thumbnail item-start>
         <img [src]="item.profilePic" onerror="this.style.display='none'"/>
       </ion-thumbnail>
       <h2>{{item.name}}</h2>
       <p>{{item.about}}</p>
       <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
-    </button>
+    </ion-item>
+
+    <ion-item-options side="right">
+      <button ion-button color="danger" (click)="delete(item)"><ion-icon name="close"></ion-icon>Delete</button>
+    </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 </ion-content>

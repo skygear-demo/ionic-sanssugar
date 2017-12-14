@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams, ToastController, AlertController} from 'ionic-angular';
 
 import { Item } from '../../models/item';
 import { Tracking } from '../../models/tracking';
@@ -26,7 +26,8 @@ export class SearchPage {
     public trackings: Trackings,
     private toastCtrl: ToastController,
     private http: HTTP,
-    private barcodeScanner: BarcodeScanner
+    private barcodeScanner: BarcodeScanner,
+    private alertCtrl: AlertController
     ) {
     this.currentItems = this.items.query();
   }
@@ -84,6 +85,19 @@ export class SearchPage {
     });
   }
 
+  delete(item) {
+    console.log(item);
+    if(item.isDefault) {
+      alert("This is a default item, so you cannot remove it.");
+    } else {
+      this.presentDeleteConfirm(item.name, null, ()=> {
+        this.items.delete(item).then((item) => {
+          this.presentToast(item['name'] + ' is deleted.');
+        });
+      });
+    }
+  }
+
   addItem() {
     let addModal = this.modalCtrl.create('ItemCreatePage');
     addModal.onDidDismiss(item => {
@@ -111,6 +125,31 @@ export class SearchPage {
     });
 
     toast.present();
+  }
+
+  presentDeleteConfirm(itemName, cancelAction, confirmAction) {
+    let alert = this.alertCtrl.create({
+      title: 'Delete item',
+      message: 'Are you sure to delete '+itemName+'?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+            if(cancelAction) cancelAction();
+          }
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+            console.log('delete');
+            if(confirmAction) confirmAction();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
 }

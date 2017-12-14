@@ -82,9 +82,9 @@ export class Items {
       const query = new skygear.Query(SkygearItem);
       query.limit = 999; // Quick hack for no pagination
       skygear.privateDB.query(query).then((records) => {
-        
         console.log(records);
         for (let item of records) {
+          item.skygearId = item.id;
           this.items.push(new Item(item));
         }
       }, (error) => {
@@ -95,15 +95,37 @@ export class Items {
   }
 
   addItemToSkygear(item) {
-    this.skygearService.getSkygear().then(skygear => {
-      let newItem = new SkygearItem(item);
-      skygear.privateDB.save(newItem).then((record) => {
-        console.log("Saved to skygear");
-      }, (error) => {
-        console.log("cannot save to skygear: ", error);
-      })
+    return new Promise(resolve => {
+      this.skygearService.getSkygear().then(skygear => {
+        let newItem = new SkygearItem(item);
+        skygear.privateDB.save(newItem).then((record) => {
+          console.log("Saved to skygear");
+          item.skygearId= record.id;
+          resolve(item);
+        }, (error) => {
+          console.log("cannot save to skygear: ", error);
+          resolve(item);
+        })
+
+      });
 
     });
+
+  }
+
+  deleteItemFromSkygear(item) {
+    return new Promise((resolve, reject) => {
+      this.skygearService.getSkygear().then(skygear => {
+        skygear.privateDB.delete({
+          id: item.skygearId
+        }).then((record) => {
+          console.log(record);
+          resolve(record);
+        }, (error) => {
+          reject(error);
+        });
+      });
+    })
   }
 
   query(params?: any) {
@@ -125,15 +147,30 @@ export class Items {
   }
 
   add(item: Item) {
-    this.items.push(item);
-
     var itemJSON = JSON.stringify(item);
-    // TODO: Save item in storage
-    this.addItemToSkygear(JSON.parse(itemJSON));
+    // Save item in storage
+    this.addItemToSkygear(JSON.parse(itemJSON)).then(savedItem =>{
+      this.items.push(savedItem);
+    });
 
   }
 
   delete(item: Item) {
-    this.items.splice(this.items.indexOf(item), 1);
+    return new Promise ((resolve, reject) => {
+      if(!item.isDefault) {
+        // skygear Delete
+        console.log(item.skygearId);
+        this.deleteItemFromSkygear(item).then((record)=>{
+          console.log("removed");
+          this.items.splice(this.items.indexOf(item), 1);
+          resolve(item);
+        }).catch((error)=>{
+          console.log("error");
+          console.log(error);
+          reject(error);
+        })
+      }
+    });
+
   }
 }
