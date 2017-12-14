@@ -38,9 +38,15 @@ page-chart ion-content {
     background: linear-gradient(180deg, #fdc777, #fd595b);
   }
   /* To Fit in smaller screensize */
-  ion-grid {
-    @media (min-device-width: 375px) { 
-        transform: scale(0.9, 0.9) translate(0px, -20px);
+  ion-grid.main {
+    @media (max-width: 375px) { 
+        transform: scale(0.9, 0.9) translate(0px, -50px);
+    }
+  }
+
+  ion-grid.add-button-footer {
+    @media (max-width: 375px) { 
+        transform: scale(0.9, 0.9);
     }
   }
 
@@ -89,6 +95,15 @@ page-chart h5 {
     &:hover {
       opacity: 0.7;
     };
+  }
+
+  i.icon.barcode {
+    display: inline-block;
+    height: 57px;
+    width: 57px;
+    background-image: url('../assets/img/scan-barcode.png');
+    background-size: contain;
+    background-repeat: no-repeat;
   }
 
   .summary {
@@ -311,6 +326,14 @@ page-chart h5 {
     &.stage-3 svg .circle-foreground {
         stroke: rgb(253, 26, 32);
     }
+  }
+
+  .add-button-footer {
+    background: transparent;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
   }
 
 }

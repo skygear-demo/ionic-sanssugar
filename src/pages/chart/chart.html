@@ -1,5 +1,5 @@
 <ion-content text-center class="vertical-align-content" id="chart-main-content">
-<ion-grid>
+<ion-grid class="main">
   <ion-row>
     <ion-col col-3><button ion-button color="light" clear (click)="share()">Share</button></ion-col>
     <ion-col col-6><button ion-button color="light" clear (click)="showHistory()" class="today-date">{{this.todayText}}</button></ion-col>
@@ -38,12 +38,14 @@
   <ion-row>
     <ion-col col-12><h3 class="today-intake">Today's intake</h3></ion-col>
   </ion-row>
-
-  <ion-row>
-    <ion-col col-4><button ion-button color="light" clear round (click)="logout()">Logout</button></ion-col> 
-    <ion-col col-4><button class="add-intake" clear (click)="add()"><img src="assets/img/add-intake.png"></button></ion-col> <!--TODO: slides up-->
-    <ion-col col-4><button ion-button color="light" clear round (click)="addByBarcode()">Barcode</button></ion-col>
-  </ion-row>
 </ion-grid>
 
+<ion-grid class="add-button-footer">
+  <ion-row>
+    <ion-col col-4><button ion-button color="light" clear round (click)="logout()">Logout</button></ion-col> 
+    <ion-col col-4><button class="add-intake" clear (click)="add()"><img src="assets/img/add-intake.png"></button></ion-col> 
+    <ion-col col-4><button ion-button color="light" clear round (click)="addByBarcode()"><i class="icon barcode"></i></button></ion-col>
+  </ion-row>
+</ion-grid>
+  
 </ion-content>
