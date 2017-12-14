@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { Settings } from '../../providers/providers';
-import { WelcomePage } from '../pages';
 
 import {
   SkygearService
@@ -118,7 +117,7 @@ export class SettingsPage {
         console.log(skygear.auth.currentUser);
         skygear.auth.logout().then((user)=> {
           this.showToast(`Logged out!`);
-          this.navCtrl.push(WelcomePage);
+          this.navCtrl.push('LandingPage');
         }, (err) => {
           this.showToast("Couldn't logout");
       })

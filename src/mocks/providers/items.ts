@@ -94,7 +94,6 @@ export class Items {
     });
   }
 
-
   addItemToSkygear(item) {
     this.skygearService.getSkygear().then(skygear => {
       let newItem = new SkygearItem(item);

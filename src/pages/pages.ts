@@ -5,14 +5,7 @@ export const FirstRunPage = 'ChartPage';
 // Change this if not using tabs
 export const MainPage = 'TabsPage';
 
-// The initial root pages for our tabs (remove if not using tabs)
-// export const Tab1Root = 'ListMasterPage';
-export const Tab1Root = 'ChartPage';
-export const Tab2Root = 'SearchPage';
-export const Tab3Root = 'SettingsPage';
-
 export const ChartPage = 'ChartPage'
-export const WelcomePage = 'WelcomePage';
 
 export const LandingPage = 'LandingPage';
 export const InfoPage = 'InfoPage';

@@ -39,7 +39,7 @@ export class User {
   email: string;
   birthday: Date;
   name: string;
-  skygear;
+
 
   constructor(public api: Api,
     private skygearService: SkygearService,
@@ -55,13 +55,11 @@ export class User {
   }
 
   getCurrentUser () {
-    var skygear = this.skygearService.getSkygear();
 
     var skygearPromise = new Promise((resolve, reject) => {
 
     this.skygearService.getSkygear()
       .then((skygear) => {
-        this.skygear = skygear;
         console.log(`Skygear OK`);
         resolve(skygear.auth.currentUser);
       })
@@ -154,7 +152,7 @@ export class User {
   }
 
   updateProfileToSkygear() {
-    var skygear = this.skygearService.getSkygear().then(skygear =>{
+    this.skygearService.getSkygear().then(skygear =>{
       const modifiedRecord = new skygear.UserRecord({
         '_id': 'user/' + skygear.auth.currentUser.id,
         'email': this.email,
@@ -170,22 +168,23 @@ export class User {
   }
 
   getProfile() {
-    var skygear = this.skygearService.getSkygear();
-    const query = new skygear.Query(skygear.UserRecord);
-    query.equalTo('_id', skygear.auth.currentUser.id);
-    skygear.publicDB.query(query).then((records) => {
-      const record = records[0];
-      console.log(record);
-    }, (error) => {
-      console.error(error);
+    this.skygearService.getSkygear().then(skygear => {
+      const query = new skygear.Query(skygear.UserRecord);
+      query.equalTo('_id', skygear.auth.currentUser.id);
+      skygear.publicDB.query(query).then((records) => {
+        const record = records[0];
+        console.log(record);
+      }, (error) => {
+        console.error(error);
+      });
     });
+
   }
 
   signupSkygear() {
     var skygearPromise = new Promise((resolve, reject) => {
       this.skygearService.getSkygear()
         .then((skygear) => {
-          this.skygear = skygear;
           console.log(`Skygear OK`);
           skygear.auth.signupAnonymously().then((user)=> {
             console.log(user);
@@ -209,11 +208,9 @@ export class User {
   }
 
   logoutSkygear() {
-    var skygear = this.skygearService.getSkygear();
     var skygearPromise = new Promise((resolve, reject) => {
       this.skygearService.getSkygear()
         .then((skygear) => {
-          this.skygear = skygear;
           console.log(`Skygear OK`);
           skygear.auth.logout().then((user)=> {
             console.log(user);
