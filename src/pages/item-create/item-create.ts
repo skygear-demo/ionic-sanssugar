@@ -186,19 +186,23 @@ export class ItemCreatePage {
 
 
   getPicture() {
-    if (Camera['installed']()) {
-      this.camera.getPicture({
-        destinationType: this.camera.DestinationType.DATA_URL,
-        targetWidth: 96,
-        targetHeight: 96
-      }).then((data) => {
-        this.form.patchValue({ 'profilePic': 'data:image/jpg;base64,' + data });
-      }, (err) => {
-        alert('Unable to take photo');
-      })
-    } else {
-      this.fileInput.nativeElement.click();
-    }
+    // Beta not supporting custom photo yet
+    alert("Custom photo not supported yet in this version.");
+    return;
+
+    // if (Camera['installed']()) {
+    //   this.camera.getPicture({
+    //     destinationType: this.camera.DestinationType.DATA_URL,
+    //     targetWidth: 96,
+    //     targetHeight: 96
+    //   }).then((data) => {
+    //     this.form.patchValue({ 'profilePic': 'data:image/jpg;base64,' + data });
+    //   }, (err) => {
+    //     alert('Unable to take photo');
+    //   })
+    // } else {
+    //   this.fileInput.nativeElement.click();
+    // }
   }
 
   processWebImage(event) {
