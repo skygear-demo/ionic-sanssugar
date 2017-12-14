@@ -8,6 +8,7 @@ import { Items, Trackings } from '../../providers/providers';
 import * as Enums from '../../app/enums';
 
 import { HTTP } from '@ionic-native/http';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 @IonicPage()
 @Component({
@@ -24,7 +25,8 @@ export class SearchPage {
     public items: Items,
     public trackings: Trackings,
     private toastCtrl: ToastController,
-    private http: HTTP
+    private http: HTTP,
+    private barcodeScanner: BarcodeScanner
     ) {
     this.currentItems = this.items.query();
   }
@@ -58,6 +60,30 @@ export class SearchPage {
     });
   }
 
+  // FIXME: Copied over from chart.ts, shall unify this code.
+  addByBarcode() {
+    this.barcodeScanner.scan({disableSuccessBeep: true}).then((barcodeData) => {
+ // Success! Barcode data is here
+      console.log(barcodeData);
+      if (!barcodeData.cancelled) {
+        let addModal = this.modalCtrl.create('ItemCreatePage', {barcode: barcodeData});
+        addModal.onDidDismiss(item => {
+
+          var tracking = new Tracking(item, new Date());
+          this.trackings.add(tracking);
+          if (item) {
+            this.items.add(item);
+          }
+          this.presentToast(item['name'] + ' is tracked.');
+        })
+        addModal.present();
+      }
+    }, (err) => {
+    // An error occurred
+      console.error('Error', err);
+    });
+  }
+
   addItem() {
     let addModal = this.modalCtrl.create('ItemCreatePage');
     addModal.onDidDismiss(item => {
@@ -65,14 +91,14 @@ export class SearchPage {
       this.trackings.add(tracking);
       if (item) {
         this.items.add(item);
+        this.presentToast(item['name'] + ' is tracked.');
       }
 
-      this.presentToast(item['name'] + ' is tracked.');
     });
     addModal.present();
   }
 
-    presentToast(msg) {
+  presentToast(msg) {
     let toast = this.toastCtrl.create({
       message: msg,
       duration: 2000,

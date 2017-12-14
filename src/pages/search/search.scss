@@ -9,4 +9,32 @@ page-search {
       background-color: rgb(50,146,210);
     }
   }
+
+  i.icon.add-manually {
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    margin-right: 14px;
+    background-image: url('../assets/img/add-intake.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  .item-list ion-thumbnail{
+    border: #eee solid 1px;
+    position: relative;
+  }
+
+  .item-list ion-thumbnail img {
+    max-height: 100%;  
+    max-width: 100%; 
+    width: auto;
+    height: auto;
+    position: absolute;  
+    top: 0;  
+    bottom: 0;  
+    left: 0;  
+    right: 0;  
+    margin: auto;
+  }
 }

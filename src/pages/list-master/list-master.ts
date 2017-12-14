@@ -97,7 +97,6 @@ export class ListMasterPage {
           } else if (percent >= 75) {
             values[i].stage = 3;
           }
-
           this.daySummaries.push(values[i]);
         }
 
@@ -128,7 +127,7 @@ export class ListMasterPage {
   }
 
   addTracking() {
-
+    this.navCtrl.push('SearchPage');
   }
 
   print(summary) {

@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'Add Intake' | translate }}</ion-title>
+    <ion-title>{{ 'Confirm Food Details' | translate }}</ion-title>
     <ion-buttons start>
       <button ion-button (click)="cancel()">
         <span color="primary" showWhen="ios">
@@ -39,7 +39,7 @@
         <ion-input type="text" placeholder="Food Name" formControlName="name"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input type="number" placeholder="Sugar Ammount (in gram)" pattern="[0-9]*" formControlName="sugar" min="0"></ion-input>
+        <ion-input type="number" placeholder="Sugar Ammount (in gram)" pattern="^[0-9]*[\.]?[0-9]*$" step="0.1" formControlName="sugar" min="0"></ion-input>
       </ion-item> 
       <ion-item>
         <ion-label>Food Type</ion-label>

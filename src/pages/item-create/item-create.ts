@@ -37,7 +37,6 @@ export class ItemCreatePage {
     private http: HTTP) {
 
     this.barcodeData = params.get('barcode')
-
     console.log('Barcode', params.get('barcode'));
 
     this.form = formBuilder.group({
@@ -45,20 +44,36 @@ export class ItemCreatePage {
       name: ['', Validators.required],
       type: ['', Validators.required],
       volume: [''],
-      sugar: [null, Validators.required]
+      sugar: [null, Validators.required],
+      barcode: ''
     });
 
     // Watch the form for changes, and
     this.form.valueChanges.subscribe((v) => {
       this.isReadyToSave = this.form.valid;
     });
+
+    // If there is existing Item
+    let existingItem = params.get('existingItem');
+
+    console.log('existingItem', params.get('existingItem'));
+     if(existingItem) {
+      this.item = existingItem;
+      this.form.patchValue({'name': existingItem["name"]});
+      this.form.patchValue({'about': existingItem["about"]});
+      this.form.patchValue({'sugar': existingItem["sugar"]});
+      this.form.patchValue({'profilePic': existingItem["profilePic"]});
+      this.form.patchValue({'barcode': existingItem["barcode"]});
+      this.form.patchValue({'type': existingItem["type"]});
+      this.form.patchValue({'volume': existingItem["volume"]});
+     }
   }
 
   ionViewDidLoad() {
-
     if(this.barcodeData) {
       // prefill the form for that bar code
       this.searchFromAPI(this.barcodeData['text']);
+      this.form.patchValue({'barcode': this.barcodeData['text']});
     }
   }
 
@@ -126,7 +141,29 @@ export class ItemCreatePage {
         //categories / categories_tags
         // drinks / beverages
 
-        this.form.patchValue({'type': 'snacks'});
+        var typeCandidate = 'snacks';
+
+        let categories = dataJSON["product"]["categories"];
+        let categoriesTags = dataJSON["product"]["categories_tags"];
+
+        for (var i in categories) {
+          var category = categories[i];
+          if (category.indexOf('drinks') !== -1 || category.indexOf('beverages') !== -1) {
+            typeCandidate = 'drinks';
+          }
+          console.log(category);
+        }
+
+        for (var i in categoriesTags) {
+          var categoryTag = categoriesTags[i];
+          console.log(categoryTag);
+
+          if (categoryTag.indexOf('drinks') !== -1 || categoryTag.indexOf('beverages') !== -1) {
+            typeCandidate = 'drinks';
+          }
+        }
+
+        this.form.patchValue({'type': typeCandidate});
 
       } else {
         // Not Found

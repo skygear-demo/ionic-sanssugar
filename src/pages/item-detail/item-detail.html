@@ -14,5 +14,11 @@
   <div class="item-detail" padding>
     <h2>{{item.name}}</h2>
     <p>{{item.about}}</p>
+    <p> Sugar amount: {{item.sugar}} g</p>
+
+
+    <button ion-button full class="add-current-item" (click)="addCurrentItem()">
+      <i class="icon add-manually"></i> Track this item
+    </button>
   </div>
 </ion-content>

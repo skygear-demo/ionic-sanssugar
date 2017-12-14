@@ -6,6 +6,12 @@ import moment from 'moment';
 
 import { User } from '../user/user';
 
+import {
+  SkygearService,
+  SkygearItem,
+  SkygearTracking
+} from '../../app/skygear.service';
+
 @Injectable()
 export class Trackings {
 
@@ -15,7 +21,9 @@ export class Trackings {
   firstDay:Date;
 
   constructor(private user: User,
-    private storage: Storage) {
+    private storage: Storage,
+    private skygearService: SkygearService
+    ) {
     this.user.getUserEmail().then(email => {
       this.setFirstDayIfNotSet();
     });
@@ -73,16 +81,20 @@ export class Trackings {
     let storageKey = this.getStorageKey(dateString);
     this.storage.get(storageKey).then((records) => {
       records = records? records : [];
-      console.log('records', records);
+      console.log('records before:', records);
       records.push(tracking);
 
-      console.log('records ', records);
+      console.log('records after:', records);
 
       this.storage.set(storageKey, records);
     });
+
+    // Save to skygear
+
   }
 
   delete(tracking: Tracking) {
+    //TODO
     var date = tracking.date;
     console.log(tracking);
     var dateString = moment().format('YYYYMMDD');
@@ -99,7 +111,7 @@ export class Trackings {
           console.log(i);
           let record = records[i];
           console.log(record.item);
-          if (record.item.hasOwnProperty('sugar')) {
+          if (record && record.item && record.item.hasOwnProperty('sugar')) {
             sum += Number(record.item['sugar']);
           }
         }

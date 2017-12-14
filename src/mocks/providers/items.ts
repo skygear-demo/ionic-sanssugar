@@ -3,6 +3,11 @@ import { Injectable } from '@angular/core';
 
 import { Item } from '../../models/item';
 
+import {
+  SkygearService,
+  SkygearItem
+} from '../../app/skygear.service';
+
 @Injectable()
 export class Items {
   items: Item[] = [];
@@ -10,108 +15,96 @@ export class Items {
 
   defaultItem: any = {};
 
-
-  constructor(private sqlite: SQLite) {
+  constructor(private skygearService: SkygearService) {
     // These are default Items
     let defaultItems = [
       {
-        "name": "Coke 355ml",
-        "profilePic": "http://icons.iconarchive.com/icons/michael/coke-pepsi/512/Coca-Cola-Can-icon.png",
+        "name": "Coke 330ml",
+        "profilePic": "https://static.openfoodfacts.org/images/products/544/900/000/0996/front_en.193.400.jpg",
         "about": "",
-        "sugar": "62"
+        "sugar": "35",
+        "barcode":"5449000000996",
+        "type":"drinks",
+        "volume": "330",
+        "isDefault": true
+
       },
       {
-        "name": "Fanta 355ml",
-        "profilePic": "",
+        "name": "Fanta 330ml",
+        "profilePic": "https://static.openfoodfacts.org/images/products/544/900/001/1527/front_en.49.400.jpg",
         "about": "",
-        "sugar": "44"
+        "sugar": "21.4",
+        "barcode": "5449000011527",
+        "type":"drinks",
+        "volume": "330",
+        "isDefault": true
       },
       {
-        "name": "Sprite",
-        "profilePic": "",
+        "name": "Sprite 330ml",
+        "profilePic": "https://static.openfoodfacts.org/images/products/500/011/254/5357/front_da.18.400.jpg",
         "about": "",
-        "sugar": "25"
+        "sugar": "33.3",
+        "barcode":"5000112545357",
+        "type":"drinks",
+        "volume": "330",
+        "isDefault": true
       },
       {
-        "name": "Mountain Dew",
-        "profilePic": "",
+        "name": "Mountain Dew 330ml",
+        "profilePic": "https://static.openfoodfacts.org/images/products/406/080/017/5472/front_fr.5.400.jpg",
         "about": "",
-        "sugar": "46"
+        "sugar": "40.9",
+        "barcode":"4060800175472",
+        "type":"drinks",
+        "volume": "330",
+        "isDefault": true
       },
       {
-        "name": "Oreo (1 pack)",
-        "profilePic": "",
+        "name": "Oreo 🍪 (1 pc)",
+        "profilePic": "https://static.openfoodfacts.org/images/products/841/000/081/0004/front_fr.41.400.jpg",
         "about": "",
-        "sugar": "23"
+        "sugar": "2.2",
+        "barcode": "8410000810004",
+        "type":"snacks",
+        "isDefault": true
       }
     ];
 
     for (let item of defaultItems) {
       this.items.push(new Item(item));
     }
+
+    this.getDataFromSkygear();
   }
 
-      // // SQL1
-      // db.executeSql('SELECT * FROM expense ORDER BY rowid DESC', {})
-      // .then(res => {
-      //   this.expenses = [];
-      //   for(var i=0; i<res.rows.length; i++) {
-      //     this.expenses.push({rowid:res.rows.item(i).rowid,date:res.rows.item(i).date,type:res.rows.item(i).type,description:res.rows.item(i).description,amount:res.rows.item(i).amount})
-      //   }
-      // })
-      // .catch(e => console.log(e));
-
-      // // SQL2
-      // db.executeSql('SELECT SUM(amount) AS totalIncome FROM expense WHERE type="Income"', {})
-      // .then(res => {
-      //   if(res.rows.length>0) {
-      //     this.totalIncome = parseInt(res.rows.item(0).totalIncome);
-      //     this.balance = this.totalIncome-this.totalExpense;
-      //   }
-      // })
-      // .catch(e => console.log(e));
-
-      // // SQL3
-      // db.executeSql('SELECT SUM(amount) AS totalExpense FROM expense WHERE type="Expense"', {})
-      // .then(res => {
-      //   if(res.rows.length>0) {
-      //     this.totalExpense = parseInt(res.rows.item(0).totalExpense);
-      //     this.balance = this.totalIncome-this.totalExpense;
-      //   }
-      // })
-
-
-  // initDB() {
-  //   this.sqlite.create({
-  //     name: 'data.db',
-  //     location: 'default'
-  //   })
-  //     .then((db: SQLiteObject) => {
-
-
-  //       db.executeSql('create table trackings(name VARCHAR(32))', {})
-  //         .then(() => console.log('Executed SQL'))
-  //         .catch(e => console.log(e));
-
-  //     })
-  //     .catch(e => console.log(e));
-
-  // }
-
-  getData() {
-    this.sqlite.create({
-      name: 'sans_sugar_food.db',
-      location: 'default'
-    }).then((db: SQLiteObject) => {
-      db.executeSql('SELECT * FROM food ORDER BY name DESC', {})
-      .then(res => {
-        this.food = [];
-        for(var i=0; i<res.rows.length; i++) {
-          this.food.push({name:'noname'})
+  getDataFromSkygear() {
+    this.skygearService.getSkygear().then(skygear => {
+      const query = new skygear.Query(SkygearItem);
+      query.limit = 999; // Quick hack for no pagination
+      skygear.privateDB.query(query).then((records) => {
+        
+        console.log(records);
+        for (let item of records) {
+          this.items.push(new Item(item));
         }
+      }, (error) => {
+        console.log("Error: ",error);
       })
-      .catch(e => console.log(e));
-    }).catch(e => console.log(e));
+
+    });
+  }
+
+
+  addItemToSkygear(item) {
+    this.skygearService.getSkygear().then(skygear => {
+      let newItem = new SkygearItem(item);
+      skygear.privateDB.save(newItem).then((record) => {
+        console.log("Saved to skygear");
+      }, (error) => {
+        console.log("cannot save to skygear: ", error);
+      })
+
+    });
   }
 
   query(params?: any) {
@@ -134,6 +127,11 @@ export class Items {
 
   add(item: Item) {
     this.items.push(item);
+
+    var itemJSON = JSON.stringify(item);
+    // TODO: Save item in storage
+    this.addItemToSkygear(JSON.parse(itemJSON));
+
   }
 
   delete(item: Item) {

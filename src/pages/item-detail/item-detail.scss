@@ -4,6 +4,7 @@ page-item-detail {
     width: 100%;
     background-position: center center;
     background-size: contain;
+    background-repeat: no-repeat;
     height: 250px;
   }
 
@@ -12,4 +13,18 @@ page-item-detail {
     background: white;
     position: absolute;
   }
+  button.add-current-item {
+    padding: 20px;
+
+    i.icon.add-manually {
+      display: inline-block;
+      height: 24px;
+      width: 24px;
+      margin-right: 14px;
+      background-image: url('../assets/img/add-intake.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+  }
+
 }
