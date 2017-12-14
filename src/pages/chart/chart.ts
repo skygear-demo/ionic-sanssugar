@@ -15,8 +15,7 @@ import { MainPage } from '../pages';
 import moment from 'moment';
 
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
-import { ThreeDeeTouch, ThreeDeeTouchQuickAction, ThreeDeeTouchForceTouch } from '@ionic-native/three-dee-touch';
-
+import { Screenshot } from '@ionic-native/screenshot';
 
 @IonicPage()
 @Component({
@@ -47,8 +46,8 @@ export class ChartPage {
     private toastCtrl: ToastController,
     private barcodeScanner: BarcodeScanner,
     private storage: Storage,
-    private threeDeeTouch: ThreeDeeTouch) { 
-    }
+    private screenshot: Screenshot) { 
+  }
 
   getTodayString() {
     let date = moment().format('D MMM YYYY');
@@ -112,7 +111,8 @@ export class ChartPage {
 
   howManyCansOfCoke(gram) {
     // 35g per can of 330ml
-    var noOfCans = Math.round(gram / 35 * 100) /100;
+    const COKE_SUGAR_IN_GRAM = 35;
+    var noOfCans = Math.round(gram / COKE_SUGAR_IN_GRAM * 100) /100;
     return noOfCans;
   }
 
@@ -154,6 +154,7 @@ export class ChartPage {
   }
 
   ionViewDidEnter() {
+    this.navCtrl.swipeBackEnabled=false;
     // Load doughnut Chart
     this.user.getUserEmail().then(email=> {
       console.log("email", email);
@@ -190,7 +191,10 @@ export class ChartPage {
           }
 
           this.presentToast(item['name'] + ' is tracked.');
-          this.updateSummary();
+          this.user.getUserEmail().then(email=> {
+            console.log("email", email);
+            this.updateSummary();
+          })
         })
         addModal.present();
       }
@@ -205,33 +209,28 @@ export class ChartPage {
   }
 
   share() {
-    // Check if sharing via email is supported
-    // this.socialSharing.canShareViaEmail().then(() => {
-    //   // Sharing via email is possible
-    // }).catch(() => {
-    //   // Sharing via email is not possible
-    // });
-
-    // Share via email
-    // this.socialSharing.shareViaEmail('Body', 'Subject', ['recipient@example.org']).then(() => {
-    //   // Success!
-    // }).catch(() => {
-    //   // Error!
-    // });
-
-    this.socialSharing.shareViaFacebook('Hey','img.png','url').then(() => {
-      // Success!
-    }).catch(() => {
-      // Error!
+    let onSuccess = (res) => {
+      console.log(res);
+      this.socialSharing.share('Let\'s take less sugar with Sans Sugar..', 'I am using Sans Sugar to track my sugar intake. #sanssugar', res.URI, null).then(() => {
+        // Success!
+      }).catch(() => {
+        // Error!
     });
 
-    this.socialSharing.share('I am using Sans Sugar to track my sugar intake.', 'Let\'s eat less sugar.', 'file', 'url').then(() => {
-      // Success!
-    }).catch(() => {
-      // Error!
+    };
+
+    let onError = (error) => {
+      console.log(error);
+      this.socialSharing.share('Let\'s take less sugar with Sans Sugar.', 'I am using Sans Sugar to track my sugar intake. #sanssugar', null,null).then(() => {
+          // Success!
+      }).catch(() => {
+        // Error!
     });
+
+    };
+    
+    this.screenshot.URI(80).then(onSuccess, onError);
   }
-
 
   presentToast(msg) {
     let toast = this.toastCtrl.create({
