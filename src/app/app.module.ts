@@ -23,6 +23,7 @@ import { HTTP } from '@ionic-native/http';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { ThreeDeeTouch} from '@ionic-native/three-dee-touch';
 import { Screenshot } from '@ionic-native/screenshot';
+import Raven from 'raven-js';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -43,6 +44,25 @@ export function provideSettings(storage: Storage) {
     option3: '3',
     option4: 'Hello'
   });
+}
+
+
+// Dev
+// Raven
+//   .config('https://f86517d6246e49c68d9bb965689756a2@sentry.io/259199')
+//   .install();
+
+//Prod
+Raven
+  .config('https://c01f6aa5e41147b9bfcb687b0948f28c@sentry.io/259244')
+  .install();
+
+
+
+export class RavenErrorHandler implements ErrorHandler {
+  handleError(err:any) : void {
+    Raven.captureException(err.originalError || err);
+  }
 }
 
 @NgModule({
@@ -86,7 +106,8 @@ export function provideSettings(storage: Storage) {
      HTTP,
      BarcodeScanner,
      ThreeDeeTouch,
-     Screenshot
+     Screenshot,
+     { provide: ErrorHandler, useClass: RavenErrorHandler } 
   ]
 })
 export class AppModule { }
