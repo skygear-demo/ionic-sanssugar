@@ -15,12 +15,14 @@ export class SkygearService {
       'apiKey': 'c140232c1b4b48d2813fc2d014a5696b',
     }).then(()=> {
       this.isConfigurated = true
-      // return Promise.resolve(skygear);
-      return skygear;
+      return Promise.resolve(skygear);
     })
 
     return promise;
   }
 }
 
-export const Tracking = skygear.Record.extend('Tracking');
+
+
+export const SkygearTracking = skygear.Record.extend('Tracking');
+export const SkygearItem = skygear.Record.extend('Item');
