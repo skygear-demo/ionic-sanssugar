@@ -75,6 +75,22 @@ page-history-detail {
         background-size: contain;
         background-repeat: no-repeat;
       }
+
+      @media (max-width: 375px) { 
+        margin-top: -100px;
+        font-size: 20px;
+        .date {
+          font-size: 18px;
+        }
+      }
+
+      @media (max-width: 270px) { 
+        margin-top: -200px;
+        font-size: 12px;
+        .date {
+          font-size: 12px;
+        }
+      }
     }
 
   }
