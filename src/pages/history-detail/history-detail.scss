@@ -3,11 +3,11 @@ page-history-detail {
     height: 370px;
 
     @media (max-width: 375px) { 
-      height: 270px;
+      height: 300px;
     }
 
     @media (max-width: 270px) { 
-      height: 160px;
+      height: 200px;
     }
 
     background: linear-gradient(180deg, #c5cbff, #58bdfe);
@@ -54,6 +54,27 @@ page-history-detail {
     .control-buttons {
       height: 54px;
       z-index: 20;
+    }
+
+    .description {
+      margin-top: -50px;
+      color: #fff;
+      font-size: 30px;
+      .date {
+         text-transform: uppercase;
+         font-weight: 200;
+         font-size: 24px;
+      }
+
+      i.icon.sugar {
+        display: inline-block;
+        height: 0.8em;
+        width: 0.8em;
+        margin-right: 4px;
+        background-image: url('../assets/img/home-sugar.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
     }
 
   }

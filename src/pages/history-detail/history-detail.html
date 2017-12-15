@@ -12,12 +12,18 @@
           <div class="level-image stage-{{stage}}" id="chart-img"></div>
         </ion-col>
       </ion-row>
+      <ion-row class="description">
+        <ion-col col-6>
+          <p><span class="date">{{this.dateString}}</span></p>
+        </ion-col>
+        <ion-col text-right><p><i class="icon sugar"></i>{{this.totalSugar}} g</p></ion-col>
+      </ion-row>
 
       </ion-grid>
     </section>
     <ion-list>
     <ion-item-sliding *ngFor="let tracking of dayTrackings" class="history-item">
-        <ion-item (click)="print(tracking)" *ngIf="tracking['item']">
+        <ion-item (click)="print(tracking)" *ngIf="tracking['item']" detail-none>
           <ion-thumbnail item-start>
             <img src="{{tracking['item']['profilePic'] || '../assets/img/fooddetails-sweets.png'}}">
           </ion-thumbnail>
@@ -33,7 +39,7 @@
 
 
     <ion-item-sliding class="history-item" *ngIf="isEmpty">
-        <button ion-item >
+        <button ion-item detail-none>
           <div class="content-container">
             <h2 class="item-name">No item tracked yet.</h2>
           </div>
