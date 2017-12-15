@@ -90,14 +90,45 @@ export class Trackings {
     });
 
     // Save to skygear
+    this.addTrackingToSkygear(tracking).then((result)=>{
+      // update toskygear id to local db
+    }).catch((error) => {
+      
+    });
+  }
 
+  addTrackingToSkygear(tracking) {
+    return new Promise(resolve => {
+      this.skygearService.getSkygear().then(skygear => {
+        let newTracking = new SkygearTracking(tracking);
+        skygear.privateDB.save(newTracking).then((record) => {
+          console.log("Saved to skygear");
+          tracking["skygearId"]= record.id;
+          resolve(tracking);
+        }, (error) => {
+          console.log("cannot save to skygear: ", error);
+          resolve(error);
+        })
+      });
+    });
   }
 
   delete(tracking: Tracking) {
-    //TODO
     var date = tracking.date;
     console.log(tracking);
     var dateString = moment().format('YYYYMMDD');
+    let storageKey = this.getStorageKey(dateString);
+
+    return new Promise(resolve => {
+      this.storage.get(storageKey).then((records) => {
+        records = records? records : [];
+        records.splice(records.indexOf(tracking), 1);
+        this.storage.set(storageKey, records);
+        resolve(records);
+      });
+    });
+
+    // TODO: delete at Skygear
   }
 
   getDateSugarTotal(date:Date) {

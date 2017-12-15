@@ -116,7 +116,7 @@ export class SearchPage {
     let toast = this.toastCtrl.create({
       message: msg,
       duration: 2000,
-      dismissOnPageChange: true,
+      dismissOnPageChange: false,
       position: 'bottom'
     });
 

@@ -36,7 +36,7 @@ export class ItemCreatePage {
     private toastCtrl: ToastController,
     private http: HTTP) {
 
-    this.barcodeData = params.get('barcode')
+    this.barcodeData = params.get('barcode');
     console.log('Barcode', params.get('barcode'));
 
     this.form = formBuilder.group({

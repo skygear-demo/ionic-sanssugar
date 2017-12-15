@@ -12,3 +12,4 @@ export const InfoPage = 'InfoPage';
 
 export const ListMasterPage = 'ListMasterPage';
 export const SearchPage = 'SearchPage'
+export const HistoryDetailPage = 'HistoryDetailPage'

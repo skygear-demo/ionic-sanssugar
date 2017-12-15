@@ -28,7 +28,7 @@ export class ItemDetailPage {
     let toast = this.toastCtrl.create({
       message: msg,
       duration: 2000,
-      dismissOnPageChange: true,
+      dismissOnPageChange: false,
       position: 'bottom'
     });
 
@@ -39,10 +39,10 @@ export class ItemDetailPage {
     toast.present();
   }
 
-  presentConfirm(itemName, cancelAction, confirmAction) {
+  presentAddConfirm(itemName, cancelAction, confirmAction) {
     let alert = this.alertCtrl.create({
-      title: 'Add as a new item?',
-      message: 'Do you want to add '+itemName+' as a new item?',
+      title: 'Save as new product item',
+      message: 'Do you want to create and save '+itemName+' as a new item?',
       buttons: [
         {
           text: 'Discard',
@@ -66,17 +66,21 @@ export class ItemDetailPage {
 
   addCurrentItem() {
     let addModal = this.modalCtrl.create('ItemCreatePage', {existingItem: this.item});
+    var existingItem = this.item;
     addModal.onDidDismiss(item => {
       var tracking = new Tracking(item, new Date());
       this.trackings.add(tracking);
       this.navCtrl.pop();
 
-      //  Ask: Add as a new item?
-      this.presentConfirm(item.name, null, ()=> {
-        this.items.add(item);
-        this.presentToast('Item '+item.name+' saved');
-      })
-
+      //  If edited, ask: Add as a new item?
+      let itemEdited = (existingItem.name !== item.name || existingItem.sugar !== item.sugar || existingItem.type !== item.type);
+      console.log('edited',itemEdited);
+      if (itemEdited) {
+        this.presentAddConfirm(item.name, null, ()=> {
+          this.items.add(item);
+          this.presentToast('Item '+item.name+' saved');
+        })
+      }
       this.presentToast(item['name'] + ' is tracked.');
     });
     addModal.present();

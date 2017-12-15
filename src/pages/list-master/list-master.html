@@ -17,7 +17,7 @@
   <ion-item-group *ngFor="let group of groupedSummaries">
   <ion-item-divider light>{{group.month}}</ion-item-divider>
     <ion-item-sliding *ngFor="let summary of group.summaries" class="history-item stage-{{summary.stage}}">
-        <button ion-item (click)="print(summary)">
+        <button ion-item (click)="showDetail(summary)">
           <ion-thumbnail item-start>
             <img src="assets/img/history-level{{summary.stage}}.png">
           </ion-thumbnail>

@@ -1,0 +1,110 @@
+page-history-detail {
+  section.summary-card {
+    height: 370px;
+
+    @media (max-width: 375px) { 
+      height: 270px;
+    }
+
+    @media (max-width: 270px) { 
+      height: 160px;
+    }
+
+    background: linear-gradient(180deg, #c5cbff, #58bdfe);
+
+    &.stage-1 {
+      background: linear-gradient(180deg, #c5cbff, #58bdfe);
+    }
+
+    &.stage-2 {
+      background: linear-gradient(180deg, #d2e26d, #23c3c0);
+    }
+
+    &.stage-3{
+      background: linear-gradient(180deg, #fdc777, #fd595b);
+    }
+
+    
+    div.level-image {
+      display: block;
+      width:375px;
+      height: 320px;
+      margin: auto;
+      margin-top: -50px;
+      max-width: 100%;
+      transform: translatey(0px);
+      animation: float 10s ease-in-out infinite;
+      background-size: contain;
+      background-image: url('../assets/img/surgar-graphic-level1.png');
+      background-repeat: no-repeat;
+
+      &.stage-1 {
+        background-image: url('../assets/img/surgar-graphic-level1.png');
+      }
+
+      &.stage-2 {
+        background-image: url('../assets/img/surgar-graphic-level2.png');
+      }
+
+      &.stage-3{
+        background-image: url('../assets/img/surgar-graphic-level3.png');
+      }
+    }
+
+    .control-buttons {
+      height: 54px;
+      z-index: 20;
+    }
+
+  }
+
+  .content {
+    background-color: rgb(244, 244, 244);
+  }
+
+  ion-item-group {
+    background-color: transparent;
+  }
+  ion-item-divider {
+    background: transparent;
+  }
+
+  ion-item-sliding.history-item {
+    background-color: transparent;
+
+    ion-thumbnail[item-start] {
+      min-width: 40px;
+      min-height: 40px;
+      position: relative;
+
+      img {
+        padding: 10px;
+        max-height: 100%;  
+        max-width: 100%; 
+        width: auto;
+        height: auto;
+        position: absolute;  
+        top: 0;  
+        bottom: 0;  
+        left: 0;  
+        right: 0;  
+        margin: auto;
+      }
+    }
+    
+    .content-container {
+        margin-left: 12px;
+    }
+
+    .item-sugar-amount {float:right;}
+    .item-name {
+      color: #666;
+      font-weight: 200;
+    }
+
+    h2, p {
+      color: #333;
+    }
+  }
+
+}

@@ -256,6 +256,12 @@ export class ChartPage {
   }
 
 
+  todaySummary() {
+    this.trackings.getDateSugarTotal(moment().toDate()).then(summary =>{
+      this.navCtrl.push('HistoryDetailPage', {summary: summary});
+    })
+  }
+
   // Test only 
   logout() {
     // Register and signup

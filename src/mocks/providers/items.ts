@@ -85,7 +85,7 @@ export class Items {
         console.log(records);
         for (let item of records) {
           item.skygearId = item.id;
-          this.items.push(new Item(item));
+          this.items.unshift(new Item(item));
         }
       }, (error) => {
         console.log("Error: ",error);
@@ -100,17 +100,14 @@ export class Items {
         let newItem = new SkygearItem(item);
         skygear.privateDB.save(newItem).then((record) => {
           console.log("Saved to skygear");
-          item.skygearId= record.id;
+          item["skygearId"]= record.id;
           resolve(item);
         }, (error) => {
           console.log("cannot save to skygear: ", error);
           resolve(item);
         })
-
       });
-
     });
-
   }
 
   deleteItemFromSkygear(item) {
@@ -152,14 +149,13 @@ export class Items {
     this.addItemToSkygear(JSON.parse(itemJSON)).then(savedItem =>{
       this.items.push(savedItem);
     });
-
   }
 
   delete(item: Item) {
     return new Promise ((resolve, reject) => {
-      if(!item.isDefault) {
+      if(!item["isDefault"]) {
         // skygear Delete
-        console.log(item.skygearId);
+        console.log(item["skygearId"]);
         this.deleteItemFromSkygear(item).then((record)=>{
           console.log("removed");
           this.items.splice(this.items.indexOf(item), 1);

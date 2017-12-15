@@ -1,0 +1,43 @@
+<ion-content>
+    <section class="summary-card stage-{{stage}}">
+     <ion-grid class="no-padding">
+        <!--Header-->
+      <ion-row  class="control-buttons">
+        <ion-col col-3><button ion-button color="light" clear (click)="back()" [hidden]="!showControl">Back</button></ion-col>
+        <ion-col col-6></ion-col>
+        <ion-col col-3><button ion-button float-right color="light" (click)="share()" clear [hidden]="!showControl">Share</button></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-12>
+          <div class="level-image stage-{{stage}}" id="chart-img"></div>
+        </ion-col>
+      </ion-row>
+
+      </ion-grid>
+    </section>
+    <ion-list>
+    <ion-item-sliding *ngFor="let tracking of dayTrackings" class="history-item">
+        <ion-item (click)="print(tracking)" *ngIf="tracking['item']">
+          <ion-thumbnail item-start>
+            <img src="{{tracking['item']['profilePic'] || '../assets/img/fooddetails-sweets.png'}}">
+          </ion-thumbnail>
+          <div class="content-container">
+            <h3 class="item-sugar-amount">{{tracking["item"]["sugar"]}} g</h3>
+            <h2 class="item-name">{{tracking["item"]["name"]}}</h2>
+          </div>
+        </ion-item>
+        <ion-item-options side="right">
+          <button ion-button color="danger" (click)="delete(tracking)"><ion-icon name="close"></ion-icon>Delete</button>
+        </ion-item-options>
+    </ion-item-sliding>
+
+
+    <ion-item-sliding class="history-item" *ngIf="isEmpty">
+        <button ion-item >
+          <div class="content-container">
+            <h2 class="item-name">No item tracked yet.</h2>
+          </div>
+        </button>
+    </ion-item-sliding>
+    </ion-list>
+</ion-content>

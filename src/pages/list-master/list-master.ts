@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 
 import { Item } from '../../models/item';
 import { Items, Trackings, User } from '../../providers/providers';
@@ -22,6 +22,7 @@ export class ListMasterPage {
 
   constructor(public navCtrl: NavController,
     public items: Items,
+    params: NavParams,
     public modalCtrl: ModalController,
     private trackings: Trackings) {
     // this.currentItems = this.items.query();
@@ -32,7 +33,7 @@ export class ListMasterPage {
   /**
    * The view loaded, let's query our items for the list
    */
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     // load from database
     this.loadSummary();
     this.navCtrl.swipeBackEnabled=true;
@@ -104,7 +105,6 @@ export class ListMasterPage {
           return a.date > b.date? -1 : 1;
         })
 
-
         this.groupSummaries(this.daySummaries);
         // every other thing can happen here e.g call a method
         console.log("OK!", this.groupedSummaries);
@@ -132,6 +132,11 @@ export class ListMasterPage {
 
   print(summary) {
     console.log(summary);
+  }
+
+  showDetail(summary) {
+    console.log(summary);
+    this.navCtrl.push('HistoryDetailPage', {summary: summary});
   }
 
 }
